@@ -1,14 +1,16 @@
 <template>
-  <nav class="top-nav">
-    <ul class="nav-list">
-      <li class="nav-item">
-        <a href=".">Home</a>
-      </li>
-    </ul>
-    <div class="right-nav">
-
-        <base-button type="submit"> Logout</base-button>
-
+  <nav class="md:container bg-green-200 flex gap-x-8 px-12 py-2">
+    <div class="">
+      <a href=".">Home</a>
+    </div>
+    <div>
+      <a href="/add">Add</a>
+    </div>
+    <div class="px-96 flex gap-x-8">
+      <base-button type="submit">Login</base-button>
+      <base-button type="submit">Register</base-button>
+      <span>Guest</span>
+      <base-button type="submit">Logout</base-button>
     </div>
   </nav>
 </template>
@@ -19,25 +21,3 @@ export default {
   components: { BaseButton },
 };
 </script>
-
-<style>
-.top-nav {
-  background-color: rgb(136, 218, 136);
-  display : flex;
-  position: sticky; 
-
-}
-.top-nav a {
-  text-decoration: none;
-}
-.nav-list{
-  list-style: none;
-  width: 50%;
-  display: flex;
-}
-.right-nav{
-  width: 50%;
-  text-align: center;
-}
-
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <base-card class="body-container">
+  <base-card>
     <span>{{ id }}</span>
     <span>{{ time }}</span>
     <span>{{ group }}</span>
@@ -39,10 +39,4 @@ export default {
 };
 </script>
 
-<style>
-.body-container {
-  display: flex;
-  column-gap: 10%;
-  width: 70%;
-}
-</style>
+<style></style>

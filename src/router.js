@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AddTransaction from './components/transaction/AddTransaction.vue'
+import AddPage from "./components/pages/AddPage.vue";
 import TransactionList from "./components/transaction/TransactionList.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: '/add', component: AddTransaction
+            path: '/add', component: AddPage
         },
         {
             path: '/', component: TransactionList 

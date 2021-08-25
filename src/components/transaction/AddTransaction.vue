@@ -1,30 +1,19 @@
 <template>
-  <add-transaction-group></add-transaction-group>
-  <base-card class="form-container">
-    <h3>Add Transaction</h3>
-    <form class="form-controls" @submit.prevent="submitForm">
-      <div class="form-control">
-        <label>Group : </label>
-        <select v-model="groupSelected">
-          <option disabled value="">Please select one</option>
-          <option v-for="group in groups" :key="group.id" :value="group">
-            {{ group.name }}
-          </option>
-        </select>
+  <base-card>
+    <div class="text-2xl font-bold px-24">New Transaction</div>
+    <form @submit.prevent="submitForm">
+      <base-input-select
+        v-model="groupSelected"
+        :options="groups"
+        label="Group : "
+      />
+      <base-input type="date" v-model="time" label="Date : " />
+      <base-input type="text" v-model.number="money" label="Money : " />
+      <base-input type="text" v-model.trim="note" label="Note : " />
+
+      <div class="px-32 py-4">
+        <base-button> Add </base-button>
       </div>
-      <div class="form-control">
-        <label>Note : </label>
-        <input type="text" v-model.trim="note" />
-      </div>
-      <div class="form-control">
-        <label>Money : </label>
-        <input type="text" v-model.number="money" />
-      </div>
-      <div class="form-control">
-        <label>Time : </label>
-        <input type="date" v-model="time" />
-      </div>
-      <base-button>Add</base-button>
     </form>
   </base-card>
 </template>
@@ -32,10 +21,11 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import BaseButton from "../../components/UI/BaseButton.vue";
-import AddTransactionGroup from "./AddTransactionGroup.vue";
+import BaseInput from "../UI/BaseInput.vue";
+import BaseInputSelect from "../UI/BaseInputSelect.vue";
 
 export default {
-  components: { BaseButton, AddTransactionGroup },
+  components: { BaseButton, BaseInput, BaseInputSelect },
   data() {
     return {
       groupSelected: null,
