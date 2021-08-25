@@ -1,20 +1,18 @@
 <template>
- <navigation></navigation> 
-  <transaction-list></transaction-list>
+  <navigation></navigation>
+  <main id="main">
+    <router-view></router-view>
+  </main>
 </template>
 
 <script>
 import Navigation from "./components/layout/Navigation.vue";
-import TransactionList from "./pages/transaction/TransactionList.vue";
 
 export default {
-  components : {
+  components: {
     Navigation,
-    TransactionList
-  }
-}
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
