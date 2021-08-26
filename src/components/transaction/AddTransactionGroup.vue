@@ -1,10 +1,12 @@
 <template>
   <base-card>
-    <span class="text-2xl font-bold px-24">New Group</span>
+    <base-h class="px-20">New Group</base-h>
     <form @submit.prevent="submitForm">
-      <base-input label="Group : " type="text" />
+      <base-input label="Group : ">
+        <input class="form-input" type="text" v-model="group" />
+      </base-input>
       <div class="px-32 py-4">
-        <base-button> Add </base-button>
+        <base-button type="submit"> Add </base-button>
       </div>
     </form>
   </base-card>
@@ -23,11 +25,13 @@ export default {
   },
   methods: {
     ...mapActions(["addTransactionGroup"]),
-    submitForm() {
+    submitForm(e) {
+      console.log("from submit :  " + this.group);
       const formData = {
         name: capitalizeFirstLetter(this.group),
       };
       this.addTransactionGroup(formData);
+      this.group = "";
     },
   },
 };

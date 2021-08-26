@@ -1,10 +1,10 @@
-import { createStore } from 'vuex';
+import { createStore } from "vuex";
 import transaction from "./transaction/index";
 
 const store = createStore({
-    modules: {
-        transaction
-    }
+  modules: {
+    transaction,
+  },
 });
 
 export default store;

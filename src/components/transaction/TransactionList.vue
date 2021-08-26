@@ -3,7 +3,6 @@
   <the-transaction
     v-for="transaction in transactions.transactions"
     :key="transaction.id"
-    :id="transaction.id"
     :time="transaction.time"
     :group="transaction.transactionGroup.name"
     :note="transaction.note"

@@ -1,11 +1,21 @@
 <template>
-  <base-card class="header-container">
-    <h3>No.</h3>
-    <h3>Time</h3>
-    <h3>Group</h3>
-    <h3>Note</h3>
-    <h3>Money</h3>
+  <base-card
+    class="
+      container
+      grid grid-cols-1
+      md:grid-cols-5
+      mx-auto
+      text-green-700
+      py-2
+    "
+  >
+    <base-h>Time</base-h>
+    <base-h>Group</base-h>
+    <base-h>Note</base-h>
+    <base-h>Money</base-h>
   </base-card>
 </template>
 
-<style scoped></style>
+<script>
+export default {};
+</script>

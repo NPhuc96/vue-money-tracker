@@ -4,13 +4,24 @@
       <label class="font-bold">{{ label }} </label>
     </div>
     <div class="w-3/4">
-      <input class="form-input" :value="value" :type="type" />
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["value", "type", "label"],
+  props: {
+    label: {
+      type: String,
+      required: true,
+    },
+  },
+
+  methods: {
+    onInput(event) {
+      this.$emit("input", event.target.value);
+    },
+  },
 };
 </script>
