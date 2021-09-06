@@ -1,12 +1,13 @@
 <template>
+  <the-navigation></the-navigation>
   <home></home>
-  <main id="main">
-    <router-view></router-view>
-  </main>
 </template>
 
 <script>
-export default {};
+import Home from "./components/pages/Home.vue";
+export default {
+  components: { Home },
+};
 </script>
 
 <style></style>

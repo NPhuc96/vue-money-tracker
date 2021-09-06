@@ -1,5 +1,7 @@
 <template>
-  <the-navigation></the-navigation>
+  <main id="main">
+    <router-view></router-view>
+  </main>
 </template>
 
 <script>
