@@ -5,8 +5,9 @@ import mutations from "./mutations";
 export default {
   state() {
     return {
-      userId: null,
-      token: null,
+      userId: localStorage.getItem("userId") || null,
+      token: localStorage.getItem("token") || null,
+      expiration: localStorage.getItem("expiration") || null,
     };
   },
   actions,

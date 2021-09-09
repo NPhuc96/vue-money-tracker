@@ -1,26 +1,26 @@
 <template>
   <base-card class="mx-auto w-2/5 mt-10">
-    <div class="font-bold text-lg w-2/5 mx-auto py-4">Sign Up Form</div>
-    <form class="w-2/3 mx-auto" @submit.prevent="saveData">
+    <div class="font-bold text-lg w-2/5 mx-auto py-4">Sign Up</div>
+    <form class="w-2/3 mx-auto" @submit.prevent="save">
       <base-input
         type="text"
         placeHolder="enter email"
-        v-model:value.trim="signupData.email"
+        v-model:value.trim="signup.email"
       />
 
       <base-input
         type="password"
         placeHolder="enter password"
-        v-model:value.trim="signupData.password"
+        v-model:value.trim="signup.password"
       />
       <base-input
         type="password"
         placeHolder="re-enter password"
-        v-model:value.trim="signupData.matchingPassword"
+        v-model:value.trim="signup.matchingPassword"
       />
-      <p v-if="!!formIsValid" class="text-xs text-red-500">{{ error }}</p>
-      <p v-if="success" class="text-xs text-green-500">
-        A confirmation email has been sent
+      <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
+      <p v-if="isSuccess" class="text-xs text-green-500">
+        {{ success }}
       </p>
       <div class="py-3 mx-auto w-5/6">
         <base-button class="px-14">Sign Up</base-button>
@@ -48,9 +48,10 @@ export default {
     const passwordPattern = ref(
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
     );
-    let formIsValid = ref(true);
+    const success = ref("A confirmation email has been sent");
+    let isError = ref(null);
+    let isSuccess = ref(null);
     let error = ref(null);
-    let success = ref(false);
 
     const errors = reactive({
       email: {
@@ -63,53 +64,64 @@ export default {
       },
     });
 
-    const signupData = reactive({
+    const signup = reactive({
       email: "",
       password: "",
       matchingPassword: "",
     });
 
-    function checkEmailPattern() {
-      console.log("Valid email : " + emailPattern.value.test(signupData.email));
-      if (!emailPattern.value.test(signupData.email)) {
-        error.value = errors.email.invalid;
-        return false;
+    async function save() {
+      validateEmail();
+      validatePassword();
+      try {
+        await store.dispatch("signup", signup);
+        isSuccess.value = true;
+      } catch (err) {
+        if (err.response) {
+          const errorMessage = err.response.data.errorMessage;
+          check409Error(errorMessage);
+          check422Error(errorMessage);
+          check400Error(errorMessage);
+        }
       }
-      return true;
+    }
+
+    function validateEmail() {
+      if (!emailPattern.value.test(signup.email)) {
+        throwError(errors.email.invalid);
+      }
     }
 
     function validatePassword() {
-      console.log(
-        "Valid password : " + passwordPattern.value.test(signupData.password)
-      );
-      if (!passwordPattern.value.test(signupData.password)) {
-        error.value = errors.password.invalid;
-        return false;
-      } else {
-        if (!(signupData.password === signupData.matchingPassword)) {
-          error.value = errors.password.confirmation;
-          return false;
-        }
-        return true;
-      }
+      checkPasswordPattern();
+      checkMatchingPassword();
     }
 
-    async function saveData() {
-      if (checkEmailPattern() && validatePassword()) {
-        try {
-          await store.dispatch("signup", signupData);
-          success.value = true;
-        } catch (err) {
-          formIsValid = false;
-          console.log(err.message);
-          if (err.response.status === 409) {
-            error.value = errors.email.taken;
-          } else error.value = "Error in server";
-        }
-      }
+    function checkPasswordPattern() {
+      if (!passwordPattern.value.test(signup.password))
+        throwError(errors.password.invalid);
     }
 
-    return { signupData, saveData, error, formIsValid, success };
+    function checkMatchingPassword() {
+      if (!(signup.password === signup.matchingPassword))
+        throwError(errors.password.confirmation);
+    }
+
+    function check409Error(err) {
+      if (err.response.status === 409) throwError(err);
+    }
+    function check422Error(err) {
+      if (err.response.status === 422) throwError(err);
+    }
+    function check400Error(err) {
+      if (err.response.status === 400) throwError(err);
+    }
+    function throwError(errorMessage) {
+      isError.value = true;
+      error.value = errorMessage;
+    }
+
+    return { signup, save, error, isError, success, isSuccess };
   },
 };
 </script>

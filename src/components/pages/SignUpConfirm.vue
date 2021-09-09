@@ -2,7 +2,7 @@
   <base-card class="mx-auto w-2/5 mt-10">
     <p v-if="isError" class="text-red-500 text-center">{{ error }}</p>
     <p v-else class="text-green-500 text-center">
-      Successfully Confirmed Email
+      {{ success }}
     </p>
   </base-card>
 </template>
@@ -16,8 +16,8 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
-
-    const isError = ref(false);
+    const success = ref("Successfully Confirmed Email");
+    const isError = ref(null);
     const error = ref("");
 
     const confirmation = {
@@ -29,12 +29,19 @@ export default {
       try {
         await store.dispatch("confirmEmailToken", confirmation);
       } catch (err) {
-        isError.value = true;
-        error.value = err;
+        if (err.response) {
+          const errorMessage = err.response.data.errorMessage;
+          throwError(errorMessage);
+        }
       }
     }
+
+    function throwError(errorMessage) {
+      isError.value = true;
+      error.value = errorMessage;
+    }
     confirmToken();
-    return { error, isError, confirmToken };
+    return { error, isError, confirmToken, success };
   },
 };
 </script>

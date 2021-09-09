@@ -7,7 +7,7 @@ import SignupConfirm from "./components/pages/SignUpConfirm.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", component: Home },
+    { path: "/", component: Home, name: "home" },
     { path: "/login", component: Login },
     { path: "/signup", component: Signup },
     { path: "/auth/confirm", component: SignupConfirm },
