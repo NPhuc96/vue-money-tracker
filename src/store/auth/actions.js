@@ -1,22 +1,16 @@
-import beforeAuthHeaders from "../index";
-import axios from "axios";
+import axios from "../../api/Client";
 
-const API_LOCATION = process.env.VUE_APP_API_LOCATION;
-const REGISTER = API_LOCATION + "/registration";
+const REGISTER = "/registration";
 const REGISTER_CONFIRMATION = REGISTER + "/confirm?";
-const LOGIN = API_LOCATION + "/login?";
+const LOGIN = "/login?";
 
 export default {
   async signup(context, payload) {
-    const response = await axios.post(
-      REGISTER,
-      {
-        email: payload.email,
-        password: payload.password,
-        matchingPassword: payload.matchingPassword,
-      },
-      { beforeAuthHeaders }
-    );
+    const response = await axios.post(REGISTER, {
+      email: payload.email,
+      password: payload.password,
+      matchingPassword: payload.matchingPassword,
+    });
     const result = await response.data;
     console.log("Result from signup : " + result);
   },
@@ -27,7 +21,7 @@ export default {
       email: payload.email,
     }).toString();
 
-    await axios.post(REGISTER_CONFIRMATION + params, {}, { beforeAuthHeaders });
+    await axios.post(REGISTER_CONFIRMATION + params, {});
   },
 
   async login(context, payload) {
@@ -36,11 +30,7 @@ export default {
       password: payload.password,
     }).toString();
     console.log(params);
-    const response = await axios.post(
-      LOGIN + params,
-      {},
-      { beforeAuthHeaders }
-    );
+    const response = await axios.post(LOGIN + params, {});
     const result = await response.data;
     setLocalStorage(result);
     commitUser(context, payload);
@@ -51,7 +41,6 @@ function setLocalStorage(payload) {
     localStorage.setItem("token", payload.token);
     localStorage.setItem("user_id", payload.userId);
     localStorage.setItem("expiration", payload.expiration);
-    console.log("token : ", localStorage.getItem("token"));
   }
 }
 function commitUser(context, payload) {

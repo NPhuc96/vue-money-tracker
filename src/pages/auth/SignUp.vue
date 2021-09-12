@@ -87,9 +87,8 @@ export default {
     }
 
     function validateEmail() {
-      if (!emailPattern.value.test(signup.email)) {
+      if (!emailPattern.value.test(signup.email))
         throwError(errors.email.invalid);
-      }
     }
 
     function validatePassword() {

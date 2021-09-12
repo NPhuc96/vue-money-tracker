@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { reactive, ref, computed } from "vue";
+import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -36,7 +36,6 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
-
     const login = reactive({
       email: "",
       password: "",
@@ -46,15 +45,13 @@ export default {
       wrongCredentails: "Email or password is incorrect",
       invaild: "User is blocked",
     });
-    const isError = ref(false);
-    let isLoggedIn = computed(function () {
-      return store.getters.isAuthenticated;
-    });
+    const isError = ref(null);
+
     async function save() {
       validate();
       try {
         await store.dispatch("login", login);
-        checkAuthentication();
+        router.push({ name: "home" });
       } catch (err) {
         if (err.response) {
           checkError400(err);
@@ -62,33 +59,29 @@ export default {
         }
       }
     }
-    function checkAuthentication() {
-      if (isLoggedIn.value) {
-        router.push({ name: "home" });
-      }
-    }
+    /*     function checkAuthentication() {
+      console.log(store.getters.isAuthenticated);
+      if (store.getters.isAuthenticated) 
+       
+    } */
+
     function validate() {
-      if (login.email === "" || login.passsword === "") {
+      if (login.email === "" || login.passsword === "")
         throwError("Field cant be blank");
-      }
     }
     function checkError400(err) {
-      if (err.response.status === 400) {
-        throwError(errors.invaild);
-      }
+      if (err.response.status === 400) throwError(errors.invaild);
     }
 
     function checkError403(err) {
-      if (err.response.status === 403) {
-        throwError(errors.wrongCredentails);
-      }
+      if (err.response.status === 403) throwError(errors.wrongCredentails);
     }
 
     function throwError(errorMessage) {
       isError.value = true;
       error.value = errorMessage;
     }
-    return { isError, error, save, login, isLoggedIn };
+    return { isError, error, save, login };
   },
 };
 </script>

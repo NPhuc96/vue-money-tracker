@@ -9,6 +9,6 @@ export default {
     return state.expiration;
   },
   isAuthenticated(state) {
-    return !state.token;
+    return !!state.token;
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <base-card class="mx-auto w-2/5 mt-10">
     <p v-if="isError" class="text-red-500 text-center">{{ error }}</p>
-    <p v-else class="text-green-500 text-center">
+    <p v-else-if="isSuccess" class="text-green-500 text-center">
       {{ success }}
     </p>
   </base-card>
@@ -9,7 +9,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 
 export default {
@@ -17,6 +17,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const success = ref("Successfully Confirmed Email");
+    const isSuccess = ref(null);
     const isError = ref(null);
     const error = ref("");
 
@@ -28,6 +29,7 @@ export default {
     async function confirmToken() {
       try {
         await store.dispatch("confirmEmailToken", confirmation);
+        isSuccess.value = true;
       } catch (err) {
         if (err.response) {
           const errorMessage = err.response.data.errorMessage;
@@ -41,7 +43,7 @@ export default {
       error.value = errorMessage;
     }
     confirmToken();
-    return { error, isError, confirmToken, success };
+    return { error, isError, confirmToken, success, isSuccess };
   },
 };
 </script>

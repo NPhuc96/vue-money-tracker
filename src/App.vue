@@ -1,18 +1,21 @@
 <template>
-  <the-navigation></the-navigation>
-  <home></home>
+  <the-navigation :isLoggedIn="isLoggedIn"></the-navigation>
+  <router-view :isLoggedIn="isLoggedIn"></router-view>
 </template>
 
 <script>
-import { onBeforeUnmount } from "@vue/runtime-core";
-import Home from "./components/pages/Home.vue";
+import { useStore } from "vuex";
+import { computed } from "vue";
+
 export default {
-  components: { Home },
   setup() {
-    localStorage.clear();
-    onBeforeUnmount(function () {
-      localStorage.clear();
+    //localStorage.clear();
+    const store = useStore();
+    let isLoggedIn = computed(function () {
+      return store.getters.isAuthenticated;
     });
+
+    return { isLoggedIn };
   },
 };
 </script>
