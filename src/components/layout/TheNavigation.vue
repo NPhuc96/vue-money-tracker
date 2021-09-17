@@ -16,7 +16,9 @@
 <script>
 export default {
   props: ["isLoggedIn"],
-  setup() {},
+  setup() {
+    
+  },
 };
 </script>
 

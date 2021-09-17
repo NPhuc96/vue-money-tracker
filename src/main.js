@@ -7,7 +7,9 @@ import BaseButton from "./components/UI/BaseButton.vue";
 import BaseInput from "./components/UI/BaseInput.vue";
 import store from "./store/index";
 import router from "./router";
+
 import "./assets/tailwind.css";
+
 
 const app = createApp(App);
 app.component("the-navigation", TheNavigation);

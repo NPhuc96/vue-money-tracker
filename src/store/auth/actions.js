@@ -1,8 +1,10 @@
 import axios from "../../api/Client";
 
+
 const REGISTER = "/registration";
 const REGISTER_CONFIRMATION = REGISTER + "/confirm?";
 const LOGIN = "/login?";
+
 
 export default {
   async signup(context, payload) {
@@ -34,17 +36,23 @@ export default {
     const result = await response.data;
     setLocalStorage(result);
     commitUser(context, payload);
+    pushHome(payload.router,response);
   },
 };
-function setLocalStorage(payload) {
+  function pushHome(router,response){
+    if(response.status ===200){
+      router.push({name : "home"});
+    }
+  }
+  function setLocalStorage(payload) {
   if (payload != null) {
     localStorage.setItem("token", payload.token);
     localStorage.setItem("user_id", payload.userId);
     localStorage.setItem("expiration", payload.expiration);
   }
 }
-function commitUser(context, payload) {
-  context.commit("setUser", {
+  function commitUser(context, payload) {
+    context.commit("setUser", {
     token: payload.token,
     userId: payload.userId,
     expiration: payload.expiration,

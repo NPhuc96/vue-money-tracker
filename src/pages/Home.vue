@@ -10,32 +10,37 @@
 <script>
 import TransactionList from "./transaction/TransactionList.vue";
 import { useStore } from "vuex";
-import { reactive } from "vue";
-import { computed } from "@vue/reactivity";
+import {useRoute,useRouter} from "vue-router";
+import { reactive,computed,watch } from "vue";
+
 export default {
-  props: ["isLoggedIn"],
+ 
   components: { TransactionList },
-  setup(props) {
+  setup() {
     const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+
+    const page =  computed(()=> route.query.page || 1);
+    const size = computed(()=>route.query.size || 15);
+
     const pageRequest = reactive({
-      userId: store.getters.userId,
-      page: null,
-      pageSize: null,
+      page: page,
+      size: size,
     });
+    watch(pageRequest,()=>{
+      getTransaction();
+    })
     function getTransaction() {
-      if (props.isLoggedIn) {
-        store.dispatch("getTransactions", pageRequest);
-      }
+      router.replace({query :pageRequest});
+      store.dispatch("getTransactions", pageRequest);
     }
     getTransaction();
     let transactions = computed(() => store.getters.transactions);
-    let isFetching = computed(function () {
-      if (transactions.value) {
-        return false;
-      }
-      return true;
+    let isFetching = computed(() => {
+      return transactions.value ? false : true;
     });
-    return { transactions, isFetching };
+    return { transactions, isFetching};
   },
 };
 </script>

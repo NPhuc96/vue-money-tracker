@@ -10,39 +10,43 @@
       :note="transaction.note"
     ></transaction-item>
   </base-list-card>
-  <p v-if="!isFetching" class="md:container mx-auto">{{ countMessage }}</p>
-  <pagination v-if="!isFetching" :pageInfo="transactions.pageInfo"></pagination>
+  <div class=" md:container mx-auto md:flex">
+    <div class="w-2/5">
+     <p v-if="!isFetching" >{{ countMessage }}</p>
+      </div>
+    <pagination v-if="!isFetching" :pageInfo="transactions.pageInfo" class="border-2"></pagination>
+  </div>
 </template>
 
 <script>
 import TransactionHeader from "../../components/transaction/TransactionHeader.vue";
 import TransactionItem from "../../components/transaction/TransactionItem.vue";
-import { computed } from "vue";
 import Pagination from "../../components/transaction/Pagination.vue";
+import { computed } from "vue";
+
 export default {
   props: ["transactions", "isFetching"],
   components: { TransactionHeader, TransactionItem, Pagination },
   setup(props) {
     const countMessage = computed(
       () =>
-        "Show from " +
-        from() +
+        from.value +
         " to " +
-        to() +
+        to.value +
         " of " +
-        totalEls() +
+        totalEls.value +
         " transactions"
     );
-    function from() {
-      return props.transactions.pageInfo.from;
-    }
-    function to() {
-      return props.transactions.pageInfo.to;
-    }
-    function totalEls() {
-      return props.transactions.pageInfo.totalElements;
-    }
-
+    let from = computed(()=>{
+      return props.transactions.pageInfo.from
+    })
+    let to = computed(()=>{
+      return props.transactions.pageInfo.to
+    })
+    let totalEls = computed(()=>{
+      return props.transactions.pageInfo.totalElements
+    })
+ 
     return { countMessage };
   },
 };

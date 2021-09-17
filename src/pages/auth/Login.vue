@@ -39,6 +39,7 @@ export default {
     const login = reactive({
       email: "",
       password: "",
+      router : router
     });
     const error = ref("");
     const errors = reactive({
@@ -51,7 +52,6 @@ export default {
       validate();
       try {
         await store.dispatch("login", login);
-        router.push({ name: "home" });
       } catch (err) {
         if (err.response) {
           checkError400(err);
@@ -59,11 +59,6 @@ export default {
         }
       }
     }
-    /*     function checkAuthentication() {
-      console.log(store.getters.isAuthenticated);
-      if (store.getters.isAuthenticated) 
-       
-    } */
 
     function validate() {
       if (login.email === "" || login.passsword === "")
