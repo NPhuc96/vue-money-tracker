@@ -10,7 +10,6 @@ import router from "./router";
 
 import "./assets/tailwind.css";
 
-
 const app = createApp(App);
 app.component("the-navigation", TheNavigation);
 app.component("base-card", BaseCard);

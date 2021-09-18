@@ -1,20 +1,10 @@
 <template>
-  <the-navigation :isLoggedIn="isLoggedIn"></the-navigation>
-  <router-view :isLoggedIn="isLoggedIn" ></router-view>
+  <router-view></router-view>
 </template>
 
 <script>
-import { useStore } from "vuex";
-import {computed} from "vue";
 export default {
-  setup() {
-    const store = useStore();
-    
-    const isLoggedIn = computed(()=>store.getters.isAuthenticated);  
-  
-    return {isLoggedIn}
-  },
-  
+  setup() {},
 };
 </script>
 

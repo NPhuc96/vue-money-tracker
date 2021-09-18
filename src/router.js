@@ -8,14 +8,14 @@ import moment from "moment-timezone";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", component: Home, name: "home"},
+    { path: "/", component: Home, name: "home" },
     { path: "/login", component: Login, name: "login" },
     { path: "/signup", component: Signup },
     { path: "/auth/confirm", component: SignupConfirm },
   ],
 });
 router.beforeEach((to, from, next) => {
-  if (to.name !== "login" &&( !isTimeValid()  || !isAuthenticated())) {
+  if (to.name !== "login" && (!isTimeValid() || !isAuthenticated())) {
     next({ name: "login" });
   } else next();
 });
@@ -34,6 +34,6 @@ const compareTime = (date) => {
 };
 
 const parseTime = (date) => {
-  return  moment.tz(date, "yyyy/MM/DD HH:mm:ss", "Asia/Bangkok");
+  return moment.tz(date, "yyyy/MM/DD HH:mm:ss", "Asia/Bangkok");
 };
 export default router;

@@ -36,10 +36,11 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+    router.replace({ query: {} });
     const login = reactive({
       email: "",
       password: "",
-      router : router
+      router: router,
     });
     const error = ref("");
     const errors = reactive({

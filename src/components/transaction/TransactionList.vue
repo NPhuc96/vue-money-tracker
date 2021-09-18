@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import TransactionHeader from "../../components/transaction/TransactionHeader.vue";
-import TransactionItem from "../../components/transaction/TransactionItem.vue";
-import Pagination from "../../components/transaction/Pagination.vue";
+import TransactionHeader from "./TransactionHeader.vue";
+import TransactionItem from "./TransactionItem.vue";
+import Pagination from "./Pagination.vue";
 import { computed } from "vue";
 
 export default {

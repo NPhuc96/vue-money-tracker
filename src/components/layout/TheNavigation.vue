@@ -7,17 +7,28 @@
 
       <li class="m-3">
         <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
-        <base-button v-else-if="isLoggedIn">Logout</base-button>
+        <base-button v-else-if="isLoggedIn" @click="logout">Logout</base-button>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 export default {
-  props: ["isLoggedIn"],
   setup() {
-    
+    const store = useStore();
+    const router = useRouter();
+
+    const isLoggedIn = computed(() => store.getters.isAuthenticated);
+
+    function logout() {
+      store.dispatch("logout");
+      router.push({ name: "login" });
+    }
+    return { isLoggedIn, logout };
   },
 };
 </script>
