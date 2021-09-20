@@ -5,9 +5,7 @@
         <router-link :to="{name:'home'}" class="text-lg font-bold">MoneyTracker</router-link>
       </li>
       <li class="m-3">
-        <router-link :to="{name : 'theAddition'}">
-          Add
-        </router-link>
+        <base-button @click="showAddition">Add</base-button>
       </li>
 
       <li class="m-3">
@@ -23,6 +21,7 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 export default {
+  props : ["showAddition"],
   setup() {
     const store = useStore();
     const router = useRouter();

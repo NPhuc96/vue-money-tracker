@@ -11,24 +11,30 @@ import moment from "moment-timezone";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", component: Home, name: "home" },
+    {
+      path: "/",
+      component: Home,
+      name: "home",
+      children: [
+        {
+          path: "add",
+          redirect: "/add/transaction",
+          component: TheAddition,
+          name: "theAddition",
+          children: [
+            {
+              path: "transaction",
+              component: AddTransaction,
+              name: "addTransaction",
+            },
+            { path: "group", component: AddGroup, name: "addGroup" },
+          ],
+        },
+      ],
+    },
     { path: "/login", component: Login, name: "login" },
     { path: "/signup", component: Signup },
     { path: "/auth/confirm", component: SignupConfirm },
-    {
-      path: "/add",
-      redirect: "/add/transaction",
-      component: TheAddition,
-      name: "theAddition",
-      children: [
-        {
-          path: "transaction",
-          component: AddTransaction,
-          name: "addTransaction",
-        },
-        { path: "group", component: AddGroup, name: "addGroup" },
-      ],
-    },
   ],
 });
 router.beforeEach((to, from, next) => {

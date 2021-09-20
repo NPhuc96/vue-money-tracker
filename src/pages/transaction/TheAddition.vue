@@ -1,6 +1,6 @@
 <template>
-  <teleport to="body">
-    <base-card class="mx-auto w-1/2" 
+<teleport to="body"> 
+    <base-card class="fixed w-2/5 top-1/4 left-1/4 " 
         >
     <base-card class="mx-auto grid grid-cols-2  text-center">
       <div class="border-r-4" :class="{'bg-green-50':isTransactionTab}">
@@ -13,7 +13,7 @@
       </base-card> 
       <router-view></router-view>
     </base-card>
-  </teleport>
+    </teleport>
 </template>
 
 <script>
