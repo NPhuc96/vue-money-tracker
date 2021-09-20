@@ -7,7 +7,7 @@
       :onDate="transaction.onDate"
       :amount="transaction.amount"
       :group="transaction.groups.name"
-      :note="transaction.note ||''"
+      :note="transaction.note"
     ></transaction-item>
   </base-list-card>
   <div class="md:container mx-auto md:flex">

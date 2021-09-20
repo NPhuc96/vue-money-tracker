@@ -7,7 +7,6 @@ export default {
     return {
       transactions: null,
       groups: [],
-      
     };
   },
   actions,
