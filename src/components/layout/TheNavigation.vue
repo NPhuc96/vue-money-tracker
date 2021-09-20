@@ -2,11 +2,16 @@
   <div class="md:contrainer border-b border-green-100">
     <ul class="flex">
       <li class="m-3">
-        <router-link to="/" class="text-lg font-bold">MoneyTracker</router-link>
+        <router-link :to="{name:'home'}" class="text-lg font-bold">MoneyTracker</router-link>
+      </li>
+      <li class="m-3">
+        <router-link :to="{name : 'theAddition'}">
+          Add
+        </router-link>
       </li>
 
       <li class="m-3">
-        <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
+        <router-link :to="{name : 'login'}" v-if="!isLoggedIn">Login</router-link>
         <base-button v-else-if="isLoggedIn" @click="logout">Logout</base-button>
       </li>
     </ul>

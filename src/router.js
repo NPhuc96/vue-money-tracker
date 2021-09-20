@@ -3,6 +3,9 @@ import Home from "./pages/Home.vue";
 import Login from "./pages/auth/Login.vue";
 import Signup from "./pages/auth/SignUp.vue";
 import SignupConfirm from "./pages/auth/SignUpConfirm.vue";
+import TheAddition from "./pages/transaction/TheAddition.vue";
+import AddTransaction from "./pages/transaction/AddTransaction.vue";
+import AddGroup from "./pages/transaction/AddGroup.vue";
 import moment from "moment-timezone";
 
 const router = createRouter({
@@ -12,6 +15,20 @@ const router = createRouter({
     { path: "/login", component: Login, name: "login" },
     { path: "/signup", component: Signup },
     { path: "/auth/confirm", component: SignupConfirm },
+    {
+      path: "/add",
+      redirect: "/add/transaction",
+      component: TheAddition,
+      name: "theAddition",
+      children: [
+        {
+          path: "transaction",
+          component: AddTransaction,
+          name: "addTransaction",
+        },
+        { path: "group", component: AddGroup, name: "addGroup" },
+      ],
+    },
   ],
 });
 router.beforeEach((to, from, next) => {

@@ -1,6 +1,6 @@
 <template>
   <the-navigation></the-navigation>
-  <main id="main">
+  <main id="main" :key="key">
     <transaction-list
       :transactions="transactions"
       :isFetching="isFetching"
@@ -20,27 +20,32 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-
+    
     const page = computed(() => route.query.page || 1);
     const size = computed(() => route.query.size || 15);
-
+    let transactions = computed(() => 
+   
+       store.getters.transactions
+      );
+    let key = computed(()=>store.getters.key);  
     const pageRequest = reactive({
       page: page,
       size: size,
     });
-    watch(pageRequest, () => {
+    watch((pageRequest,key), () => {
+      
       getTransaction();
     });
+    getTransaction();
     function getTransaction() {
       router.replace({ query: pageRequest });
       store.dispatch("getTransactions", pageRequest);
     }
-    getTransaction();
-    let transactions = computed(() => store.getters.transactions);
+
     let isFetching = computed(() => {
       return transactions.value ? false : true;
     });
-    return { transactions, isFetching };
+    return { transactions, isFetching,key };
   },
 };
 </script>
