@@ -1,8 +1,9 @@
 <template>
   <the-navigation :showAddition="showAddition"></the-navigation>
   <main id="main" :key="key" >
-    <the-addition v-if="isShow"/>
+    <the-addition v-if="isShow" :key="key"/>
     <transaction-list
+      @showUpdate="showUpdate"
       :transactions="transactions"
       :isFetching="isFetching"
     ></transaction-list>
@@ -10,7 +11,7 @@
 </template>
 
 <script>
-import TransactionList from "./transaction/TransactionList.vue";
+import TransactionList from "../components/transaction/TransactionList.vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, computed, watch,ref } from "vue";
@@ -34,13 +35,11 @@ export default {
       page: page,
       size: size,
     });
-    watch((pageRequest,key), () => {
-      
+    watch((pageRequest,key), () => {     
       getTransaction();
     });
     getTransaction();
-    function getTransaction() {
-      router.replace({ query: pageRequest });
+    function getTransaction() {      
       store.dispatch("getTransactions", pageRequest);
     }
 
@@ -48,19 +47,26 @@ export default {
       return transactions.value ? false : true;
     });
     function showAddition(){
-      
-      isShow.value = !isShow.value
-      switchRoute()
-      
+    
+      isShow.value = !isShow.value;
+      switchRoute();     
     }
-    function switchRoute(){
+    function showUpdate(id){
+      isShow.value = !isShow.value;
+      switchRoute(id);  
+    }
+    function switchRoute(id){
       if(isShow.value){
+        console.log(id);
+        if(id){
+          router.push({ name:"theAddition",query:{id : id}});
+        }else
         router.push({ name:"theAddition" });
       }else      
        router.push({name :"home",query: pageRequest })    
     }
 
-    return { transactions, isFetching,key,isShow,showAddition };
+    return { transactions, isFetching,key,isShow,showAddition,showUpdate };
   },
 };
 </script>

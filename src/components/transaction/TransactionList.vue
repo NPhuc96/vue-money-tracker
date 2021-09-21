@@ -1,13 +1,14 @@
 <template>
-  <transaction-header></transaction-header>
-  <base-list-card v-if="!isFetching">
-    <transaction-item
+  <base-list-card v-if="!isFetching" >
+    <transaction-item 
+      @showUpdate="$emit('showUpdate',$event)"
       v-for="transaction in transactions.transactions"
       :key="transaction.id"
+      :id ="transaction.id"
       :onDate="transaction.onDate"
       :amount="transaction.amount"
       :group="transaction.groups.name"
-      :note="transaction.note"
+      :note="transaction.note || ''"
     ></transaction-item>
   </base-list-card>
   <div class="md:container mx-auto md:flex">
@@ -23,14 +24,14 @@
 </template>
 
 <script>
-import TransactionHeader from "./TransactionHeader.vue";
 import TransactionItem from "./TransactionItem.vue";
 import Pagination from "./Pagination.vue";
 import { computed } from "vue";
 
 export default {
   props: ["transactions", "isFetching"],
-  components: { TransactionHeader, TransactionItem, Pagination },
+  emits : ["showUpdate"],
+  components: {  TransactionItem, Pagination },
   setup(props) {
     const countMessage = computed(
       () =>

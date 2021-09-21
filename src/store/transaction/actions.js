@@ -1,7 +1,8 @@
 import axios from "../../api/Client";
 
-const GET_TRANSACTION = "/transactions";
+const GET_TRANSACTIONS = "/transactions";
 const ADD_TRANSACTION = "/transaction/add";
+const GET_TRANSACTION = "/transaction";
 const GET_GROUP = "/groups";
 const ADD_GROUP = "/group/add";
 
@@ -12,10 +13,25 @@ export default {
       page: pageRequest.page,
       pageSize: pageRequest.size,
     };
-    const response = await axios.post(GET_TRANSACTION, request);
+    const response = await axios.post(GET_TRANSACTIONS, request);
     const result = await response.data;
     console.log(result);
     context.commit("setTransactions", result);
+  },
+  async getTransaction(context,id){
+    const response = await axios.post(
+      GET_TRANSACTION,
+      {},
+      {
+        params: {
+          id: id,
+          userid: localStorage.getItem("user_id"),
+        },
+      }
+    );
+    const result = await response.data;
+    console.log(result);
+    context.commit("setTransaction", result);
   },
   async getGroups(context) {
     const response = await axios.post(
@@ -32,6 +48,7 @@ export default {
   async saveTransaction(context, payload) {
 
     const transaction = {
+      id: payload.id,
       onDate: payload.onDate,
       amount: payload.amount,
       note: payload.note,

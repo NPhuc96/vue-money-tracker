@@ -30,7 +30,7 @@ export default {
 
     function logout() {
       store.dispatch("logout");
-      router.push({ name: "login" });
+      router.push({ name: "login",query:{} });
     }
     return { isLoggedIn, logout };
   },

@@ -49,9 +49,9 @@ export default {
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
     );
     const success = ref("A confirmation email has been sent");
-    let isError = ref(null);
-    let isSuccess = ref(null);
-    let error = ref(null);
+    let isError = ref();
+    let isSuccess = ref();
+    let error = ref();
 
     const errors = reactive({
       email: {

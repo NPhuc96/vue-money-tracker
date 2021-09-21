@@ -29,10 +29,12 @@
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import {useRoute} from "vue-router";
 
 export default {
   setup() {
     const store = useStore();
+    const route = useRoute();
     store.dispatch("getGroups");
     const enteredDate = ref();
     const enteredAmount = ref();
@@ -41,8 +43,29 @@ export default {
     const error = ref();
     const isError = ref();
     const groups = computed(() => store.getters.groups);
+    const transaction = computed(()=> store.getters.transaction);
+    let id = computed(()=>route.query.id||undefined);
+    getTransaction();
+    async function getTransaction(){
+        if(id.value !== undefined){
+            await store.dispatch("getTransaction",id.value);
+            fillData();
+        }
+    }
+      
+    function fillData(){       
+        console.log(transaction.value);
+        if(transaction.value){
+            enteredDate.value = transaction.value.onDate,
+            enteredAmount.value = transaction.value.amount,
+            groupSelected.value = transaction.value.groups,
+            enteredNote.value = transaction.value.note
+        }
+    }
+    
     function saveTransaction(){
         const formData ={
+            id : id.value,
             onDate: enteredDate.value,
             amount: enteredAmount.value,
             note: enteredNote.value,

@@ -1,7 +1,5 @@
 <template>
-  <div class="md:container md:mx-auto border-2">
-    <div class="grid grid-cols-5">
-      <slot />
-    </div>
+  <div class="mx-auto bg-gray-50 w-1/2 mt-3 border-4 ">
+    <slot />
   </div>
 </template>

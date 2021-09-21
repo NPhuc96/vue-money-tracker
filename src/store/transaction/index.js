@@ -6,6 +6,7 @@ export default {
   state() {
     return {
       transactions: null,
+      transaction : null,
       groups: [],
       
     };

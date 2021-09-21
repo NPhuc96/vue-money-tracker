@@ -36,18 +36,17 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
-    router.replace({ query: {} });
     const login = reactive({
       email: "",
       password: "",
       router: router,
     });
-    const error = ref("");
+    const error = ref();
     const errors = reactive({
       wrongCredentails: "Email or password is incorrect",
       invaild: "User is blocked",
     });
-    const isError = ref(null);
+    const isError = ref();
 
     async function save() {
       validate();

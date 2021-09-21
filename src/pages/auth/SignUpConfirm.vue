@@ -17,9 +17,9 @@ export default {
     const store = useStore();
     const route = useRoute();
     const success = ref("Successfully Confirmed Email");
-    const isSuccess = ref(null);
-    const isError = ref(null);
-    const error = ref("");
+    const isSuccess = ref();
+    const isError = ref();
+    const error = ref();
 
     const confirmation = {
       token: route.query.token,
