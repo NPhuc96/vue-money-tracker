@@ -16,20 +16,12 @@ const router = createRouter({
       component: Home,
       name: "home",
       children: [
-        {
-          path: "add",
-          redirect: "/add/transaction",
-          component: TheAddition,
-          name: "theAddition",
-          children: [
             {
-              path: "transaction",
+              path: "add/transaction",
               component: AddTransaction,
               name: "addTransaction",
             },
-            { path: "group", component: AddGroup, name: "addGroup" },
-          ],
-        },
+            { path: "add/group", component: AddGroup, name: "addGroup" },      
       ],
     },
     { path: "/login", component: Login, name: "login" },

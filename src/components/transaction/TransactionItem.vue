@@ -1,38 +1,49 @@
 <template>
-  <button @click="show" class="flex flex-col w-full rounded-xl  border-4 border-red-100">
-    <div class="flex flex-row gap-1 w-full text-left border-4 border-blue-100">
-      <div class="w-1/3 border-4 border-green-100">
-        {{ day }} {{ month }}
-        <div>{{ year }}</div>
+  <div class="shadow-lg border-2 border-indigo-200 bg-red-50 rounded-xl mb-3">
+    <button @click="show" class="flex flex-col w-full">
+      <div class="flex flex-row gap-1 w-full text-left">
+        <div class="w-1/3 pb-2 font-bold">
+          {{ day }} {{ month }}
+          <div>{{ year }}</div>
+        </div>
+        
+        <div class="w-2/3 font-bold">{{ money }}
+          <div class="capitalize text-xs font-normal ">{{ note }}</div>
+        </div>
+        <div class="w-1/4">
+        <button @click="$emit('showUpdate', id)" class="w-1/2">
+          <img src="../../assets/edit.svg" />
+        </button>
+        <button class="w-1/2">
+          <img src="../../assets/delete.svg" />
+        </button>
       </div>
-      <div class="w-1/3 border-4 border-green-100">{{ group }}</div>
-      <div class="w-1/3 border-4 border-green-100">{{ money }}</div>
-    </div>
-    <div v-if="isShow" class=" flex flex-row flex-wrap gap-1 text-left w-full border-4 border-purple-100">
-        <div class="w-2/3 border-4 border-yellow-100">{{ note }}</div>
-        <div class="w-32 border-4 border-pink-100">
-          <button @click="$emit('showUpdate',id)" class="w-1/2">
-            <img src="../../assets/edit.svg"/>
-          </button>
-          <button class="w-1/2">
-            <img src="../../assets/delete.svg"/>
-          </button>
       </div>
-      </div>
+    </button>
+    <div v-if="isShow" class="flex flex-row flex-wrap pb-4 text-left w-full">
       
-  </button>
+      <div class="w-3/4 font-bold">{{ group }}</div>
+      <div class="w-1/4  pl-2">
+        <button @click="$emit('showUpdate', id)" class="w-1/2">
+          <img src="../../assets/edit.svg" />
+        </button>
+        <button class="w-1/2">
+          <img src="../../assets/delete.svg" />
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { ref, computed } from "vue";
 
-
 export default {
   emits: ["showUpdate"],
   props: {
     id: {
-      type : Number,
-      required:true
+      type: Number,
+      required: true,
     },
     onDate: {
       type: String,
@@ -49,7 +60,7 @@ export default {
     note: {
       type: String,
       required: true,
-    }
+    },
   },
   setup(props) {
     const monthNames = ref([

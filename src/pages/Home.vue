@@ -1,8 +1,8 @@
 <template>
   <the-navigation :showAddition="showAddition"></the-navigation>
-  <main id="main" :key="key" >
-    <the-addition v-if="isShow" :key="key"/>
-    <transaction-list
+  <main id="main" >
+     <the-addition v-if="isShow" :showAddition="showAddition" :key="key"/>
+    <transaction-list :key="key"
       @showUpdate="showUpdate"
       :transactions="transactions"
       :isFetching="isFetching"
@@ -57,11 +57,10 @@ export default {
     }
     function switchRoute(id){
       if(isShow.value){
-        console.log(id);
         if(id){
-          router.push({ name:"theAddition",query:{id : id}});
+          router.push({ name:"addTransaction",query:{id : id}});
         }else
-        router.push({ name:"theAddition" });
+        router.push({ name:"addTransaction" });
       }else      
        router.push({name :"home",query: pageRequest })    
     }

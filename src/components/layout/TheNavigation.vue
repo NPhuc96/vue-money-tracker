@@ -1,18 +1,16 @@
 <template>
-  <div class="md:contrainer border-b border-green-100">
-    <ul class="flex">
-      <li class="m-3">
-        <router-link :to="{name:'home'}" class="text-lg font-bold">MoneyTracker</router-link>
-      </li>
-      <li class="m-3">
-        <base-button @click="showAddition">Add</base-button>
-      </li>
-
-      <li class="m-3">
-        <router-link :to="{name : 'login'}" v-if="!isLoggedIn">Login</router-link>
-        <base-button v-else-if="isLoggedIn" @click="logout">Logout</base-button>
-      </li>
-    </ul>
+  <div class="flex w-2/3 mx-auto mt-2 border-b-2 border-blue-100">
+    <div class="pl-4">
+      <router-link :to="{ name: 'home' }" class="w-1/3"
+        ><img src="../../assets/expense.png" width="110"
+      /></router-link>
+    </div>  
+      <div class="mt-3 pl-8">
+        <button @click="showAddition"><img src="../../assets/add.svg"/></button>
+      </div>
+    <div class="ml-auto mt-3 mr-12">
+      <button v-if="isLoggedIn" @click="logout"><img src="../../assets/logout.svg"/></button>
+    </div>
   </div>
 </template>
 
@@ -21,7 +19,7 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 export default {
-  props : ["showAddition"],
+  props: ["showAddition"],
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -30,7 +28,7 @@ export default {
 
     function logout() {
       store.dispatch("logout");
-      router.push({ name: "login",query:{} });
+      router.push({ name: "login", query: {} });
     }
     return { isLoggedIn, logout };
   },

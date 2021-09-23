@@ -1,8 +1,9 @@
 <template>
-  <base-card>
-    <form @submit.prevent="saveTransaction">
-      <select v-model="groupSelected">
-        <option disabled value="">Select one</option>
+  <base-card class=" " >
+    <form @submit.prevent="saveTransaction" class="w-2/3 mx-auto py-4">
+
+       <select  v-model="groupSelected" class="focus:outline-none box-border w-full mb-2">
+        <option value="" selected disabled >Your group</option>
         <option v-for="group in groups" :key="group.id" :value="group">
           {{ group.name }}
         </option>
@@ -13,12 +14,12 @@
       />
       <base-input
         type="text"
-        placeHolder="spent amount"
+        placeHolder="Your amount"
         v-model:value.number="enteredAmount"
       />
       <base-input
         type="text"
-        placeHolder="note here"
+        placeHolder="Your note"
         v-model:value.trim="enteredNote"
       />
       <base-button type="submit">Save</base-button>
@@ -39,7 +40,7 @@ export default {
     const enteredDate = ref();
     const enteredAmount = ref();
     const enteredNote = ref();
-    const groupSelected = ref();
+    const groupSelected = ref("");
     const error = ref();
     const isError = ref();
     const groups = computed(() => store.getters.groups);
@@ -54,7 +55,6 @@ export default {
     }
       
     function fillData(){       
-        console.log(transaction.value);
         if(transaction.value){
             enteredDate.value = transaction.value.onDate,
             enteredAmount.value = transaction.value.amount,
