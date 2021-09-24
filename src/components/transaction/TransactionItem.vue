@@ -1,15 +1,15 @@
 <template>
   <div class="shadow-lg border-2 border-indigo-200 bg-red-50 rounded-xl mb-3">
-    <button @click="show" class="flex flex-col w-full">
-      <div class="flex flex-row gap-1 w-full text-left">
-        <div class="w-1/3 pb-2 font-bold">
+    <button @click="show" class="flex flex-col flex-wrap w-full">
+      <div class="flex flex-row  gap-1 w-full text-left">
+        <div class="w-1/3 pb-2 font-medium">
           {{ day }} {{ month }}
           <div>{{ year }}</div>
         </div>
 
-        <div class="w-2/3 font-bold">
+        <div class="w-2/3 font-medium">
           {{ money }}
-          <div class="capitalize text-xs font-normal">{{ note }}</div>
+          <div class="capitalize text-xs font-light">{{ note }}</div>
         </div>
         <div class="w-1/4">
           <button
@@ -83,7 +83,7 @@ export default {
       "Dec",
     ]);
     let isShow = ref(false);
-    let isGroupNull = computed(()=>props.group == undefined);
+    let isGroupNull = computed(() => props.group == undefined);
     const year = computed(() => props.onDate.substring(0, 4));
     const month = computed(
       () => monthNames.value[props.onDate.substring(6, 7) - 1]

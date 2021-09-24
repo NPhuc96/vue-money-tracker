@@ -1,24 +1,29 @@
 <template>
-  <ul class="flex gap-x-5">
-    <li>
-      <router-link v-if="prev" @click="prevPage" to="">Previous</router-link>
-    </li>
+  <div class="mx-auto flex gap-x-1 w-1/3 p-1 text-sm text-center">
+    <base-anchor v-if="isFirst">
+      <router-link  @click="first" to="">First</router-link>
+    </base-anchor>
+    <base-anchor v-if="hasPrev">
+      <router-link  @click="prev" to="">Prev</router-link>
+    </base-anchor>
 
-    <li v-for="pageNumber in paginate" :key="pageNumber" class="border-2">
+    <base-anchor v-for="pageNumber in paginate" :key="pageNumber" :class="{ 'bg-blue-500 text-white': isCurrentPage(pageNumber) }">
       <router-link
-        :class="{ 'bg-green-100': isCurrentPage(pageNumber) }"
+        
         to=""
         @click="changePage(pageNumber)"
-        v-if="outRange(pageNumber)"
       >
         {{ pageNumber }}
       </router-link>
-    </li>
+    </base-anchor>
 
-    <li>
-      <router-link v-if="next" @click="nextPage" to="">Next</router-link>
-    </li>
-  </ul>
+    <base-anchor  v-if="hasNext">
+      <router-link @click="next" to="">Next</router-link>
+    </base-anchor>
+    <base-anchor v-if="isLast">
+      <router-link  @click="last" to="">Last</router-link>
+    </base-anchor>
+  </div>
 </template>
 
 <script>
@@ -31,29 +36,30 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const totalPages = ref(props.pageInfo.totalPages);
-    const page = computed(() => +route.query.page);
-    const size = computed(() => +route.query.size);
+    const page = computed(() => +route.query.page ||1);
+    const size = computed(() => +route.query.size ||10);
     let startPage = 1;
     let endPage = 5;
-    const prev = computed(() => {
-      return page.value - 1 > 0;
-    });
-    const next = computed(() => {
-      return page.value + 1 <= totalPages.value;
-    });
-    function nextPage() {
+    const hasPrev = computed(() => page.value - 1 > 0);
+    const hasNext = computed(() =>page.value + 1 <= totalPages.value);
+    const isFirst = computed(()=>page.value !=1);
+    const isLast = computed(()=>page.value != totalPages.value);
+    function next() {
       router.push({ query: { page: page.value + 1, size: size.value } });
     }
-    function prevPage() {
+    function prev() {
       router.push({ query: { page: page.value - 1, size: size.value } });
+    }
+    function first(){
+      router.push({query:{page:1,size:size.value}});
+    }
+    function last(){
+      router.push({query:{page:totalPages.value,size:size.value}});
     }
     function changePage(pageNumber) {
       router.push({
         query: { page: pageNumber, size: size.value },
       });
-    }
-    function outRange(pageNumber) {
-      return pageNumber <= totalPages.value;
     }
     function isCurrentPage(pageNumber) {
       return page.value == pageNumber;
@@ -96,12 +102,15 @@ export default {
     }
 
     return {
-      prev,
+      first,
+      isFirst,
+      hasPrev,
+      hasNext,
+      last,
+      isLast,
       next,
-      nextPage,
-      prevPage,
+      prev,
       changePage,
-      outRange,
       isCurrentPage,
       paginate,
     };

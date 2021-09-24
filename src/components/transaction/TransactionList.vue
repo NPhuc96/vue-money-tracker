@@ -1,38 +1,33 @@
 <template>
-  <base-list-card v-if="!isFetching" >
-    <transaction-item 
-      @updateTransaction="$emit('updateTransaction',$event)"
-      @updateGroup="$emit('updateGroup',$event)"
+  <base-list-card v-if="!isFetching">
+    <transaction-item
+      @updateTransaction="$emit('updateTransaction', $event)"
+      @updateGroup="$emit('updateGroup', $event)"
       v-for="transaction in transactions.transactions"
       :key="transaction.id"
-      :transactionId ="transaction.id"
+      :transactionId="transaction.id"
       :onDate="transaction.onDate"
       :amount="transaction.amount"
       :group="transaction.groups"
       :note="transaction.note || ''"
     ></transaction-item>
   </base-list-card>
- 
-    <pagination
-      v-if="!isFetching"
-      :pageInfo="transactions.pageInfo"
-      class="border-2"
-    ></pagination>
- 
+
+  <pagination
+    v-if="!isFetching"
+    :pageInfo="transactions.pageInfo"
+  ></pagination>
 </template>
 
 <script>
 import TransactionItem from "./TransactionItem.vue";
 import Pagination from "./Pagination.vue";
 
-
 export default {
-  props: ["transactions","isFetching"],
-  emits : ["updateTransaction","updateGroup"],
-  components: {  TransactionItem, Pagination },
-  setup() {
-    
-  },
+  props: ["transactions", "isFetching"],
+  emits: ["updateTransaction", "updateGroup"],
+  components: { TransactionItem, Pagination },
+  setup() {},
 };
 </script>
 

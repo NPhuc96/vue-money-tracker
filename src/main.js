@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import TheNavigation from "./components/layout/TheNavigation.vue";
-import BaseCard from "./components/UI/BaseCard.vue";
+import BaseAnchor from "./components/UI/BaseAnchor.vue";
 import BaseListCard from "./components/UI/BaseListCard.vue";
 import BaseButton from "./components/UI/BaseButton.vue";
 import BaseInput from "./components/UI/BaseInput.vue";
@@ -13,7 +13,7 @@ import "./assets/tailwind.css";
 
 const app = createApp(App);
 app.component("the-navigation", TheNavigation);
-app.component("base-card", BaseCard);
+app.component("base-anchor", BaseAnchor);
 app.component("base-list-card", BaseListCard);
 app.component("base-button", BaseButton);
 app.component("base-input", BaseInput);

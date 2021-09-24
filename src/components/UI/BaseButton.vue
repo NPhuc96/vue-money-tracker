@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/4 mx-auto py-1">
+  <div class="w-1/4 mx-auto py-0.5">
     <button
       class="
         font-bold

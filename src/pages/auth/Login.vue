@@ -1,5 +1,5 @@
 <template>
-  <base-card class="mx-auto w-2/5 mt-10">
+  <div class="mx-auto w-2/5 mt-10">
     <div class="font-bold text-lg w-1/3 mx-auto py-4">Login</div>
     <form class="w-2/3 mx-auto" @submit.prevent="save">
       <base-input
@@ -24,7 +24,7 @@
         >SignUp</router-link
       >
     </div>
-  </base-card>
+  </div>
 </template>
 
 <script>

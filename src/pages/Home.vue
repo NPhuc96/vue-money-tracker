@@ -1,22 +1,24 @@
 <template>
-  <the-navigation :showAddition="showAddition"/>
+<div class="lg:w-1/2 mx-auto md:w-full">
+  <the-navigation :switchToTransaction="switchToTransaction" />
   <main id="main" :key="key">
-     <the-addition v-if="isShow" :showAddition="showAddition" :key="key"/>
-    <transaction-list 
+    <the-addition v-if="isShow" :switchToHome="switchToHome" :key="key" />
+    <transaction-list
       @updateTransaction="updateTransaction"
       @updateGroup="updateGroup"
       :transactions="transactions"
       :isFetching="isFetching"
     />
   </main>
+  </div>
 </template>
 
 <script>
 import TransactionList from "../components/transaction/TransactionList.vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-import { reactive, computed, watch,ref } from "vue";
-import TheAddition from './transaction/TheAddition.vue';
+import { reactive, computed, watch, ref } from "vue";
+import TheAddition from "./transaction/TheAddition.vue";
 
 export default {
   components: { TransactionList, TheAddition },
@@ -24,45 +26,50 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const page = computed(() => route.query.page || 1);
-    const size = computed(() => route.query.size || 15);
-    let isShow = ref(false);
+    const page = computed(() => +route.query.page || 1);
+    const size = computed(() => +route.query.size || 10);
+    let isShow = computed(
+      () => route.name == "addTransaction" || route.name == "addGroup"
+    );
     let transactions = computed(() => store.getters.transactions);
-    let key = computed(()=>store.getters.key);  
+    let key = computed(() => store.getters.key);
     const pageRequest = reactive({
       page: page,
       size: size,
     });
-    watch([pageRequest,key], () => {     
+    watch([pageRequest, key], () => {
       getTransaction();
     });
     getTransaction();
-    function getTransaction() {      
+    function getTransaction() {
       store.dispatch("getTransactions", pageRequest);
     }
     let isFetching = computed(() => {
       return transactions.value ? false : true;
     });
-    function showAddition(){  
-      isShow.value = !isShow.value;
-      switchAddRoute();    
+
+    function switchToTransaction() {
+      router.push({ name: "addTransaction" });
     }
-    function switchAddRoute(){
-      if(isShow.value){
-        router.push({ name:"addTransaction" });
-      }
-      else      
-        router.push({name :"home",query: pageRequest });
+    function switchToHome() {
+      router.push({ name: "home", query: pageRequest });
     }
-    function updateTransaction(id){
-       isShow.value = !isShow.value;
-      router.push({ name:"addTransaction",query:{id : id}});
+    function updateTransaction(id) {
+      router.push({ name: "addTransaction", query: { id: id } });
     }
-    function updateGroup(id){
-       isShow.value = !isShow.value;
-      router.push({ name:"addGroup",query:{id : id}});
+    function updateGroup(id) {
+      router.push({ name: "addGroup", query: { id: id } });
     }
-    return { transactions, isFetching,key,isShow,showAddition,updateTransaction,updateGroup };
+    return {
+      transactions,
+      isFetching,
+      key,
+      isShow,
+      switchToTransaction,
+      switchToHome,
+      updateTransaction,
+      updateGroup,
+    };
   },
 };
 </script>

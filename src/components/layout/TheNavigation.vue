@@ -4,12 +4,14 @@
       <router-link :to="{ name: 'home' }" class="w-1/3"
         ><img src="../../assets/expense.png" width="110"
       /></router-link>
-    </div>  
-      <div class="mt-3 pl-8">
-        <button @click="showAddition"><img src="../../assets/add.svg"/></button>
-      </div>
+    </div>
+    <div class="mt-3 pl-8">
+      <button @click="switchToTransaction"><img src="../../assets/add.svg" /></button>
+    </div>
     <div class="ml-auto mt-3 mr-12">
-      <button v-if="isLoggedIn" @click="logout"><img src="../../assets/logout.svg"/></button>
+      <button v-if="isLoggedIn" @click="logout">
+        <img src="../../assets/logout.svg" />
+      </button>
     </div>
   </div>
 </template>
@@ -19,7 +21,7 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 export default {
-  props: ["showAddition"],
+  props: ["switchToTransaction"],
   setup() {
     const store = useStore();
     const router = useRouter();

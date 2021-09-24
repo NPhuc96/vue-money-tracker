@@ -20,7 +20,8 @@ module.exports = {
       indigo: colors.indigo,
       amber: colors.amber,
       blue: colors.sky,
-      black: colors.black
+      black: colors.black,
+      white:colors.white
     },
   },
   variants: {

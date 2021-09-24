@@ -1,10 +1,10 @@
 <template>
-  <base-card class="mx-auto w-2/5 mt-10">
+  <div class="mx-auto w-2/5 mt-10">
     <p v-if="isError" class="text-red-500 text-center">{{ error }}</p>
     <p v-else-if="isSuccess" class="text-green-500 text-center">
       {{ success }}
     </p>
-  </base-card>
+  </div>
 </template>
 
 <script>

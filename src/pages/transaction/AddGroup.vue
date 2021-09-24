@@ -1,14 +1,12 @@
 <template>
-  <base-card>
-    <form @submit.prevent="saveGroup" class="w-2/3 mx-auto py-4">
-      <base-input
-        type="text"
-        placeHolder="New group"
-        v-model:value.trim="enteredGroup"
-      />
-      <base-button type="submit">Save</base-button>
-    </form>
-  </base-card>
+  <form @submit.prevent="saveGroup" class="w-2/3 mx-auto py-4">
+    <base-input
+      type="text"
+      placeHolder="New group"
+      v-model:value.trim="enteredGroup"
+    />
+    <base-button type="submit">Save</base-button>
+  </form>
 </template>
 
 <script>
