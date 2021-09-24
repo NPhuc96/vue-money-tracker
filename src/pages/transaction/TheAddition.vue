@@ -18,7 +18,7 @@
           class="w-1/2"
           :class="{ 'bg-indigo-100 ring-2 ring-indigo-200': isTransactionTab }"
         >
-          <router-link :to="{ name: 'addTransaction' }" @click="toggleTab"
+          <router-link :to="{ name: 'addTransaction' }" 
             >Transaction</router-link
           >
         </div>
@@ -26,7 +26,7 @@
           class="w-1/2"
           :class="{ 'bg-indigo-100 ring-2 ring-indigo-200': !isTransactionTab }"
         >
-          <router-link :to="{ name: 'addGroup' }" @click="toggleTab"
+          <router-link :to="{ name: 'addGroup' }" 
             >Group</router-link
           >
         </div>
@@ -36,17 +36,15 @@
 </template>
 
 <script>
-import { ref } from "vue";
-
+import { computed } from "vue";
+import {useRoute} from "vue-router";
 export default {
   props : ["showAddition"],
   setup() {
-    let isTransactionTab = ref(true);
-    function toggleTab() {
-      isTransactionTab.value = !isTransactionTab.value;
-    }
-
-    return { isTransactionTab, toggleTab };
+    const route = useRoute();
+    let isTransactionTab = computed(()=>route.name == "addTransaction");
+  
+    return { isTransactionTab };
   },
 };
 </script>

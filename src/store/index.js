@@ -13,8 +13,7 @@ const store = createStore({
   },
   state() {
     return {
-      key: 0,
-      isLoading : false
+      key: 0
     };
   },
   actions,

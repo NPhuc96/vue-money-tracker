@@ -8,6 +8,7 @@ export default {
       transactions: null,
       transaction : null,
       groups: [],
+      group : null
       
     };
   },

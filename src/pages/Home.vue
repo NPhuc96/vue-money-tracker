@@ -1,12 +1,13 @@
 <template>
-  <the-navigation :showAddition="showAddition"></the-navigation>
-  <main id="main" >
+  <the-navigation :showAddition="showAddition"/>
+  <main id="main" :key="key">
      <the-addition v-if="isShow" :showAddition="showAddition" :key="key"/>
-    <transaction-list :key="key"
-      @showUpdate="showUpdate"
+    <transaction-list 
+      @updateTransaction="updateTransaction"
+      @updateGroup="updateGroup"
       :transactions="transactions"
       :isFetching="isFetching"
-    ></transaction-list>
+    />
   </main>
 </template>
 
@@ -26,48 +27,42 @@ export default {
     const page = computed(() => route.query.page || 1);
     const size = computed(() => route.query.size || 15);
     let isShow = ref(false);
-    let transactions = computed(() => 
-   
-       store.getters.transactions
-      );
+    let transactions = computed(() => store.getters.transactions);
     let key = computed(()=>store.getters.key);  
     const pageRequest = reactive({
       page: page,
       size: size,
     });
-    watch((pageRequest,key), () => {     
+    watch([pageRequest,key], () => {     
       getTransaction();
     });
     getTransaction();
     function getTransaction() {      
       store.dispatch("getTransactions", pageRequest);
     }
-
     let isFetching = computed(() => {
       return transactions.value ? false : true;
     });
-    function showAddition(){
-    
+    function showAddition(){  
       isShow.value = !isShow.value;
-      switchRoute();     
+      switchAddRoute();    
     }
-    function showUpdate(id){
-      isShow.value = !isShow.value;
-      switchRoute(id);  
-    }
-    function switchRoute(id){
+    function switchAddRoute(){
       if(isShow.value){
-        if(id){
-          router.push({ name:"addTransaction",query:{id : id}});
-        }else
         router.push({ name:"addTransaction" });
-      }else      
-       router.push({name :"home",query: pageRequest })    
+      }
+      else      
+        router.push({name :"home",query: pageRequest });
     }
-
-    return { transactions, isFetching,key,isShow,showAddition,showUpdate };
+    function updateTransaction(id){
+       isShow.value = !isShow.value;
+      router.push({ name:"addTransaction",query:{id : id}});
+    }
+    function updateGroup(id){
+       isShow.value = !isShow.value;
+      router.push({ name:"addGroup",query:{id : id}});
+    }
+    return { transactions, isFetching,key,isShow,showAddition,updateTransaction,updateGroup };
   },
 };
 </script>
-
-<style></style>

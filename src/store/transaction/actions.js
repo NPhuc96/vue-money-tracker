@@ -3,8 +3,9 @@ import axios from "../../api/Client";
 const GET_TRANSACTIONS = "/transactions";
 const ADD_TRANSACTION = "/transaction/add";
 const GET_TRANSACTION = "/transaction";
-const GET_GROUP = "/groups";
+const GET_GROUPS = "/groups";
 const ADD_GROUP = "/group/add";
+const GET_GROUP = "/group";
 
 export default {
   async getTransactions(context, pageRequest) {
@@ -35,7 +36,7 @@ export default {
   },
   async getGroups(context) {
     const response = await axios.post(
-      GET_GROUP,{},{params: {
+      GET_GROUPS,{},{params: {
           userid: localStorage.getItem("user_id"),
         },
       }
@@ -45,8 +46,22 @@ export default {
     console.log(result);
     context.commit("setGroups", result);
   },
+  async getGroup(context,id){
+    const response = await axios.post(
+      GET_GROUP,
+      {},
+      {
+        params: {
+          id: id,
+          userid: localStorage.getItem("user_id"),
+        },
+      }
+    );
+    const result = await response.data;
+    console.log(result);
+    context.commit("setGroup", result);
+  },
   async saveTransaction(context, payload) {
-
     const transaction = {
       id: payload.id,
       onDate: payload.onDate,
@@ -61,7 +76,8 @@ export default {
   },
   async saveGroup(context,payload){
     const group = {
-      name: payload,
+      id: payload.id,
+      name: payload.name,
       userId: localStorage.getItem("user_id"),
     };
      const response = await axios.post(ADD_GROUP, group);

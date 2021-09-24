@@ -62,8 +62,13 @@ export default {
             enteredNote.value = transaction.value.note
         }
     }
-    
+    function checkEmptyGroup(){
+        if(groupSelected.value === "" || groupSelected.value === undefined){
+            return groupSelected.value = null;
+        }
+    }
     function saveTransaction(){
+        checkEmptyGroup();
         const formData ={
             id : id.value,
             onDate: enteredDate.value,

@@ -6,30 +6,38 @@
           {{ day }} {{ month }}
           <div>{{ year }}</div>
         </div>
-        
-        <div class="w-2/3 font-bold">{{ money }}
-          <div class="capitalize text-xs font-normal ">{{ note }}</div>
+
+        <div class="w-2/3 font-bold">
+          {{ money }}
+          <div class="capitalize text-xs font-normal">{{ note }}</div>
         </div>
         <div class="w-1/4">
-        <button @click="$emit('showUpdate', id)" class="w-1/2">
-          <img src="../../assets/edit.svg" />
-        </button>
-        <button class="w-1/2">
-          <img src="../../assets/delete.svg" />
-        </button>
-      </div>
+          <button
+            @click.prevent="$emit('updateTransaction', transactionId)"
+            class="w-1/2"
+          >
+            <img src="../../assets/edit.svg" />
+          </button>
+          <button class="w-1/2">
+            <img src="../../assets/delete.svg" />
+          </button>
+        </div>
       </div>
     </button>
-    <div v-if="isShow" class="flex flex-row flex-wrap pb-4 text-left w-full">
-      
-      <div class="w-3/4 font-bold">{{ group }}</div>
-      <div class="w-1/4  pl-2">
-        <button @click="$emit('showUpdate', id)" class="w-1/2">
-          <img src="../../assets/edit.svg" />
-        </button>
-        <button class="w-1/2">
-          <img src="../../assets/delete.svg" />
-        </button>
+    <div v-if="isShow">
+      <div
+        v-if="!isGroupNull"
+        class="flex flex-row flex-wrap pb-4 text-left w-full"
+      >
+        <div class="w-3/4 font-bold">{{ group.name }}</div>
+        <div class="w-1/4 pl-2">
+          <button @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
+            <img src="../../assets/edit.svg" />
+          </button>
+          <button class="w-1/2">
+            <img src="../../assets/delete.svg" />
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -39,9 +47,9 @@
 import { ref, computed } from "vue";
 
 export default {
-  emits: ["showUpdate"],
+  emits: ["updateTransaction", "updateGroup"],
   props: {
-    id: {
+    transactionId: {
       type: Number,
       required: true,
     },
@@ -53,10 +61,7 @@ export default {
       type: Number,
       required: true,
     },
-    group: {
-      type: String,
-      required: true,
-    },
+    group: {},
     note: {
       type: String,
       required: true,
@@ -78,6 +83,7 @@ export default {
       "Dec",
     ]);
     let isShow = ref(false);
+    let isGroupNull = computed(()=>props.group == undefined);
     const year = computed(() => props.onDate.substring(0, 4));
     const month = computed(
       () => monthNames.value[props.onDate.substring(6, 7) - 1]
@@ -92,7 +98,8 @@ export default {
     function show() {
       isShow.value = !isShow.value;
     }
-    return { year, month, day, money, isShow, show };
+
+    return { year, month, day, money, isShow, show, isGroupNull };
   },
 };
 </script>

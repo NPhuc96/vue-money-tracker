@@ -1,5 +1,5 @@
 <template>
-  <ul class="md:container flex gap-x-5">
+  <ul class="flex gap-x-5">
     <li>
       <router-link v-if="prev" @click="prevPage" to="">Previous</router-link>
     </li>

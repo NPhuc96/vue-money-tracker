@@ -3,7 +3,6 @@ import Home from "./pages/Home.vue";
 import Login from "./pages/auth/Login.vue";
 import Signup from "./pages/auth/SignUp.vue";
 import SignupConfirm from "./pages/auth/SignUpConfirm.vue";
-import TheAddition from "./pages/transaction/TheAddition.vue";
 import AddTransaction from "./pages/transaction/AddTransaction.vue";
 import AddGroup from "./pages/transaction/AddGroup.vue";
 import moment from "moment-timezone";

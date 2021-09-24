@@ -7,5 +7,8 @@ export default {
   },
   groups(state){
     return state.groups;
+  },
+  group(state){
+    return state.group;
   }
 };

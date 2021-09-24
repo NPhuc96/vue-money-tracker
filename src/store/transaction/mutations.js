@@ -8,6 +8,9 @@ export default {
   setGroups(state,payload){
     state.groups = payload;
   },
+  setGroup(state,payload){
+    state.group = payload;
+  },
   pushGroup(state,payload){
     state.groups.push(payload);
   }
