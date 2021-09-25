@@ -4,24 +4,26 @@ module.exports = {
   purge: { content: ["./public/**/*.html", "./src/**/*.vue"] },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        transparent: "transparent",
+        current: "currentColor",
+        gray: colors.blueGray
+      },
+      inset:{
+        '15': '15%',
+        '25': '25%',
+        '30': '30%',
+        '35': '35%',
+        '40': '40%',
+        '45': '45%',
+      }
+    },
     screens: {
-      sm: "480px",
+      sm: "320px",
       md: "640px",
       lg: "1024px",
-      xl: "1440px",
-    },
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      gray: colors.blueGray,
-      red: colors.red,
-      green: colors.lime,
-      indigo: colors.indigo,
-      amber: colors.amber,
-      blue: colors.sky,
-      black: colors.black,
-      white:colors.white
+      xl: "1280px",
     },
   },
   variants: {

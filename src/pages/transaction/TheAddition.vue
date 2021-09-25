@@ -1,8 +1,28 @@
 <template>
-  <div class="fixed md:w-1/2 lg:w-1/4 overflow-auto mx-auto left-1/3 bg-blue-100 rounded-sm text-sm">
+<base-backdrop/>
+  <div
+    class="
+      fixed
+      z-50
+      sm:w-2/3
+      md:w-1/2
+      lg:w-1/3
+      xl:w-1/4
+      overflow-auto
+      top-16
+      sm:left-15
+      md:left-25
+      lg:left-1/3
+      xl:left-35
+      bg-blue-100
+      rounded-lg
+      text-sm
+      shadow-lg
+    "
+  >
     <div class="text-right w-full border-b-2 border-indigo-100">
-      <button @click="switchToHome" class="text-red-500 font-bold mr-2">
-        X
+      <button @click="switchToHome" class="text-red-400 font-medium mr-2 ">
+        Close
       </button>
     </div>
     <div class="mx-auto flex text-center">

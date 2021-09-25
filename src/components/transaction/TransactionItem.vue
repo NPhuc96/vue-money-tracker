@@ -18,7 +18,7 @@
           >
             <img src="../../assets/edit.svg" />
           </button>
-          <button class="w-1/2">
+          <button @click.prevent="$emit('getTransactionId',transactionId)" class="w-1/2">
             <img src="../../assets/delete.svg" />
           </button>
         </div>
@@ -31,10 +31,10 @@
       >
         <div class="w-3/4 font-bold">{{ group.name }}</div>
         <div class="w-1/4 pl-2">
-          <button @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
+          <button  @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
             <img src="../../assets/edit.svg" />
           </button>
-          <button class="w-1/2">
+          <button @click.prevent="$emit('getGroupId',group.id)" class="w-1/2">
             <img src="../../assets/delete.svg" />
           </button>
         </div>
@@ -47,7 +47,7 @@
 import { ref, computed } from "vue";
 
 export default {
-  emits: ["updateTransaction", "updateGroup"],
+  emits: ["updateTransaction", "updateGroup","getTransactionId","getGroupId"],
   props: {
     transactionId: {
       type: Number,

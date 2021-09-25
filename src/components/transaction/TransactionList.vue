@@ -3,6 +3,9 @@
     <transaction-item
       @updateTransaction="$emit('updateTransaction', $event)"
       @updateGroup="$emit('updateGroup', $event)"
+      @getTransactionId="$emit('getTransactionId',$event)"
+      @getGroupId="$emit('getGroupId',$event)"
+
       v-for="transaction in transactions.transactions"
       :key="transaction.id"
       :transactionId="transaction.id"
@@ -25,7 +28,7 @@ import Pagination from "./Pagination.vue";
 
 export default {
   props: ["transactions", "isFetching"],
-  emits: ["updateTransaction", "updateGroup"],
+  emits: ["updateTransaction", "updateGroup","getTransactionId","getGroupId"],
   components: { TransactionItem, Pagination },
   setup() {},
 };

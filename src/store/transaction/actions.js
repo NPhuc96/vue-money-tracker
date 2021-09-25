@@ -3,9 +3,11 @@ import axios from "../../api/Client";
 const GET_TRANSACTIONS = "/transactions";
 const ADD_TRANSACTION = "/transaction/add";
 const GET_TRANSACTION = "/transaction";
+const DELETE_TRANSACTION = "/transaction/delete";
 const GET_GROUPS = "/groups";
 const ADD_GROUP = "/group/add";
 const GET_GROUP = "/group";
+const DELETE_GROUP = "/group/delete";
 
 export default {
   async getTransactions(context, pageRequest) {
@@ -19,7 +21,7 @@ export default {
     console.log(result);
     context.commit("setTransactions", result);
   },
-  async getTransaction(context,id){
+  async getTransaction(context, id) {
     const response = await axios.post(
       GET_TRANSACTION,
       {},
@@ -36,17 +38,20 @@ export default {
   },
   async getGroups(context) {
     const response = await axios.post(
-      GET_GROUPS,{},{params: {
+      GET_GROUPS,
+      {},
+      {
+        params: {
           userid: localStorage.getItem("user_id"),
         },
       }
     );
-   
+
     const result = await response.data;
     console.log(result);
     context.commit("setGroups", result);
   },
-  async getGroup(context,id){
+  async getGroup(context, id) {
     const response = await axios.post(
       GET_GROUP,
       {},
@@ -74,15 +79,29 @@ export default {
     const result = await response.data;
     console.log(result);
   },
-  async saveGroup(context,payload){
+  async saveGroup(context, payload) {
     const group = {
       id: payload.id,
       name: payload.name,
       userId: localStorage.getItem("user_id"),
     };
-     const response = await axios.post(ADD_GROUP, group);
-     const result = await response.data;
-     console.log(result);
-     context.commit("pushGroup", result);
-  }
+    const response = await axios.post(ADD_GROUP, group);
+    const result = await response.data;
+    console.log(result);
+    context.commit("pushGroup", result);
+  },
+  async deleteTransaction(context, id) {
+    const transaction = {
+      id: id,
+      userid: localStorage.getItem("user_id"),
+    };
+    await axios.delete(DELETE_TRANSACTION, { params: transaction });
+  },
+  async deleteGroup(context, id) {
+    const group = {
+      id: id,
+      userid: localStorage.getItem("user_id"),
+    };
+    await axios.delete(DELETE_GROUP, { params: group });
+  },
 };
