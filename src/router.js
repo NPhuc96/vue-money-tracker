@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./pages/Home.vue";
+import Authentication from "./pages/auth/Authentication.vue";
 import Login from "./pages/auth/Login.vue";
 import Signup from "./pages/auth/SignUp.vue";
-import SignupConfirm from "./pages/auth/SignUpConfirm.vue";
+import Confirmation from "./pages/auth/Confirmation.vue";
 import AddTransaction from "./pages/transaction/AddTransaction.vue";
 import AddGroup from "./pages/transaction/AddGroup.vue";
 import moment from "moment-timezone";
@@ -15,21 +16,32 @@ const router = createRouter({
       component: Home,
       name: "home",
       children: [
-            {
-              path: "add/transaction",
-              component: AddTransaction,
-              name: "addTransaction",
-            },
-            { path: "add/group", component: AddGroup, name: "addGroup" },      
+        {
+          path: "add/transaction",
+          component: AddTransaction,
+          name: "addTransaction",
+        },
+        { path: "add/group", component: AddGroup, name: "addGroup" },
       ],
     },
-    { path: "/login", component: Login, name: "login" },
-    { path: "/signup", component: Signup },
-    { path: "/auth/confirm", component: SignupConfirm },
+    {
+      path: "/auth/",
+      component: Authentication,
+      name: "auth",
+      children: [
+        { path: "login", component: Login, name: "login" },
+        { path: "signup", component: Signup, name: "signup" }
+      ],
+    },
+    {
+      path: "/auth/confirm",
+      component: Confirmation,
+      name: "confirmation",
+    },
   ],
 });
 router.beforeEach((to, from, next) => {
-  if (to.name !== "login" && (!isTimeValid() || !isAuthenticated())) {
+  if (!to.path.includes("auth") && (!isTimeValid() || !isAuthenticated())) {
     next({ name: "login" });
   } else next();
 });

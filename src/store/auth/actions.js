@@ -1,8 +1,8 @@
 import axios from "../../api/Client";
 
 const REGISTER = "/registration";
-const REGISTER_CONFIRMATION = REGISTER + "/confirm?";
-const LOGIN = "/login?";
+const REGISTER_CONFIRMATION = "/registration/confirm";
+const LOGIN = "/login";
 
 export default {
   async signup(context, payload) {
@@ -16,21 +16,21 @@ export default {
   },
 
   async confirmEmailToken(context, payload) {
-    const params = new URLSearchParams({
-      token: payload.token,
-      email: payload.email,
-    }).toString();
-
-    await axios.post(REGISTER_CONFIRMATION + params, {});
+    const response = await axios.post(
+      REGISTER_CONFIRMATION,
+      {},
+      { params: { token: payload.token, userId: payload.userId } }
+    );
+    const result = await response.data;
+    console.log(result);
   },
 
   async login(context, payload) {
-    const params = new URLSearchParams({
+    const login = {
       email: payload.email,
       password: payload.password,
-    }).toString();
-    console.log(params);
-    const response = await axios.post(LOGIN + params, {});
+    };
+    const response = await axios.post(LOGIN, {}, { params: login });
     const result = await response.data;
     setLocalStorage(result);
     setAuthentication(context, payload);

@@ -5,13 +5,16 @@
         ><img src="../../assets/expense.png" width="110"
       /></router-link>
     </div>
-    <div class="mt-3 pl-8">
+    <div class="mt-3 pl-8" v-if="isLoggedIn">
       <button @click="switchToTransaction"><img src="../../assets/add.svg" /></button>
     </div>
     <div class="ml-auto mt-3 mr-12">
       <button v-if="isLoggedIn" @click="logout">
         <img src="../../assets/logout.svg" />
       </button>
+      <base-button v-else>
+        Login
+      </base-button>
     </div>
   </div>
 </template>

@@ -1,30 +1,20 @@
 <template>
-  <div class="mx-auto w-2/5 mt-10">
-    <div class="font-bold text-lg w-1/3 mx-auto py-4">Login</div>
-    <form class="w-2/3 mx-auto" @submit.prevent="save">
-      <base-input
-        type="email"
-        placeHolder="enter email"
-        v-model:value.trim="login.email"
-      />
+  <form class="w-2/3 mx-auto py-2" @submit.prevent="save">
+    <base-input
+      type="text"
+      placeHolder="enter email"
+      v-model:value.trim="login.email"
+    />
 
-      <base-input
-        type="password"
-        placeHolder="enter password"
-        v-model:value.trim="login.password"
-      />
-      <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
-      <div class="py-3 mx-auto w-5/6">
-        <base-button class="px-16">Login </base-button>
-      </div>
-    </form>
+    <base-input
+      type="password"
+      placeHolder="enter password"
+      v-model:value.trim="login.password"
+    />
+    <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
 
-    <div class="w-1/4 mx-72">
-      <router-link class="text-center hover:text-green-400" to="/signup"
-        >SignUp</router-link
-      >
-    </div>
-  </div>
+    <base-button>Login </base-button>
+  </form>
 </template>
 
 <script>
@@ -50,8 +40,8 @@ export default {
 
     async function save() {
       validate();
-      try {
-        await store.dispatch("login", login);
+      try {      
+          await store.dispatch("login", login);
       } catch (err) {
         if (err.response) {
           checkError400(err);

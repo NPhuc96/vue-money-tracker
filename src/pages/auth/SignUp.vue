@@ -1,38 +1,31 @@
 <template>
-  <div class="mx-auto w-2/5 mt-10">
-    <div class="font-bold text-lg w-2/5 mx-auto py-4">Sign Up</div>
-    <form class="w-2/3 mx-auto" @submit.prevent="save">
-      <base-input
-        type="text"
-        placeHolder="enter email"
-        v-model:value.trim="signup.email"
-      />
+  <form class="w-2/3 mx-auto py-2" @submit.prevent="save">
+    <base-input
+      type="text"
+      placeHolder="enter email"
+      v-model:value.trim="signup.email"
+    />
 
-      <base-input
-        type="password"
-        placeHolder="enter password"
-        v-model:value.trim="signup.password"
-      />
-      <base-input
-        type="password"
-        placeHolder="re-enter password"
-        v-model:value.trim="signup.matchingPassword"
-      />
-      <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
-      <p v-if="isSuccess" class="text-xs text-green-500">
-        {{ success }}
-      </p>
-      <div class="py-3 mx-auto w-5/6">
-        <base-button class="px-14">Sign Up</base-button>
-      </div>
-    </form>
-
-    <div class="w-1/4 mx-72">
-      <router-link class="text-center hover:text-green-400" to="/login"
-        >Login</router-link
-      >
+    <base-input
+      type="password"
+      placeHolder="enter password"
+      v-model:value.trim="signup.password"
+    />
+    <base-input
+      type="password"
+      placeHolder="re-enter password"
+      v-model:value.trim="signup.matchingPassword"
+    />
+    
+    <div class="text-xs">
+      <p v-if="isError" class="text-red-400">{{ error }}</p>
+      <p v-else-if="isSuccess" class="text-green-500">
+      {{ success }}
+    </p>
     </div>
-  </div>
+
+    <base-button>Register</base-button>
+  </form>
 </template>
 
 <script>
@@ -45,12 +38,10 @@ export default {
     const emailPattern = ref(
       /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/
     );
-    const passwordPattern = ref(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-    );
+    const passwordPattern = ref(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
     const success = ref("A confirmation email has been sent");
-    let isError = ref();
-    let isSuccess = ref();
+    let isError = ref(false);
+    let isSuccess = ref(false);
     let error = ref();
 
     const errors = reactive({
@@ -77,13 +68,9 @@ export default {
         await store.dispatch("signup", signup);
         isSuccess.value = true;
       } catch (err) {
-        if (err.response) {
-          const errorMessage = err.response.data.errorMessage;
-          check409Error(errorMessage);
-          check422Error(errorMessage);
-          check400Error(errorMessage);
-        }
+        checkError(err);
       }
+
     }
 
     function validateEmail() {
@@ -106,14 +93,11 @@ export default {
         throwError(errors.password.confirmation);
     }
 
-    function check409Error(err) {
-      if (err.response.status === 409) throwError(err);
-    }
-    function check422Error(err) {
-      if (err.response.status === 422) throwError(err);
-    }
-    function check400Error(err) {
-      if (err.response.status === 400) throwError(err);
+    function checkError(err) {
+      console.log(err.response);
+      if (err.response.status >= 400) {
+        throwError(err.response.data.errorMessage);
+      }
     }
     function throwError(errorMessage) {
       isError.value = true;

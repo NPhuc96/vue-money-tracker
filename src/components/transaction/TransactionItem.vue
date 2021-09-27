@@ -1,13 +1,16 @@
 <template>
-  <div class="shadow-lg border-2 border-indigo-200 bg-red-50 rounded-xl mb-3">
-    <button @click="show" class="flex flex-col flex-wrap w-full">
-      <div class="flex flex-row  gap-1 w-full text-left">
-        <div class="w-1/3 pb-2 font-medium">
+  <div
+    class="shadow-lg border-2 border-indigo-200 rounded-xl mb-3 "
+    :class="levelsOfBg()"
+  >
+    <button @click="show" class="flex flex-col flex-wrap w-full font-medium">
+      <div class="flex flex-row gap-1 w-full text-left">
+        <div class="w-1/3 pb-2 ">
           {{ day }} {{ month }}
           <div>{{ year }}</div>
         </div>
 
-        <div class="w-2/3 font-medium">
+        <div class="w-2/3">
           {{ money }}
           <div class="capitalize text-xs font-light">{{ note }}</div>
         </div>
@@ -18,7 +21,10 @@
           >
             <img src="../../assets/edit.svg" />
           </button>
-          <button @click.prevent="$emit('getTransactionId',transactionId)" class="w-1/2">
+          <button
+            @click.prevent="$emit('getTransactionId', transactionId)"
+            class="w-1/2"
+          >
             <img src="../../assets/delete.svg" />
           </button>
         </div>
@@ -27,14 +33,14 @@
     <div v-if="isShow">
       <div
         v-if="!isGroupNull"
-        class="flex flex-row flex-wrap pb-4 text-left w-full"
+        class="flex flex-row flex-wrap pb-1 text-left w-full"
       >
-        <div class="w-3/4 font-bold">{{ group.name }}</div>
-        <div class="w-1/4 pl-2">
-          <button  @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
+        <div class="w-1/4 font-medium">{{ group.name }}</div>
+        <div class="w-1/4 pr-4">
+          <button @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
             <img src="../../assets/edit.svg" />
           </button>
-          <button @click.prevent="$emit('getGroupId',group.id)" class="w-1/2">
+          <button @click.prevent="$emit('getGroupId', group.id)" class="w-1/2">
             <img src="../../assets/delete.svg" />
           </button>
         </div>
@@ -47,7 +53,7 @@
 import { ref, computed } from "vue";
 
 export default {
-  emits: ["updateTransaction", "updateGroup","getTransactionId","getGroupId"],
+  emits: ["updateTransaction", "updateGroup", "getTransactionId", "getGroupId"],
   props: {
     transactionId: {
       type: Number,
@@ -98,8 +104,24 @@ export default {
     function show() {
       isShow.value = !isShow.value;
     }
-
-    return { year, month, day, money, isShow, show, isGroupNull };
+    function levelsOfBg() {
+      if (isRed(1, 10, 6)) {
+        return level("gray", 50);
+      } else if (isRed(3, 10, 6)) {
+        return level("red", 50);
+      } else if (isRed(5, 10, 6)) {
+        return level("red", 100);
+      } else {
+        return level("red", 200);
+      }
+    }
+    function isRed(number, base, exponent) {
+      return props.amount <= number * Math.pow(base, exponent);
+    }
+    function level(color, level) {
+      return `bg-${color}-${level}`;
+    }
+    return { year, month, day, money, isShow, show, isGroupNull, levelsOfBg };
   },
 };
 </script>

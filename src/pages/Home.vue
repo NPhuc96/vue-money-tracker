@@ -6,7 +6,6 @@
       :toggleDialog="toggleDialog"
     >
     </base-dialog>
-    <the-navigation :switchToTransaction="switchToTransaction" />
     <main id="main" :key="key">
       <the-addition v-if="isShow" :switchToHome="switchToHome" :key="key" />
       <transaction-list
@@ -59,9 +58,7 @@ export default {
       return transactions.value ? false : true;
     });
 
-    function switchToTransaction() {
-      router.push({ name: "addTransaction" });
-    }
+   
     function switchToHome() {
       router.push({ name: "home", query: pageRequest });
     }
@@ -105,7 +102,6 @@ export default {
       key,
       isShow,
       showDialog,
-      switchToTransaction,
       switchToHome,
       updateTransaction,
       updateGroup,
