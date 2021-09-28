@@ -19,16 +19,16 @@
 </template>
 
 <script>
-import {useRoute} from "vue-router";
-import {computed} from "vue";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 export default {
-    setup(){
-        const route = useRoute();
-        let isLoginTab = computed(()=> route.name=="login");
+  setup() {
+    const route = useRoute();
+    let isLoginTab = computed(() => route.name == "login");
 
-        return {isLoginTab};
-    }
+    return { isLoginTab };
+  },
 };
 </script>
 

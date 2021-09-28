@@ -3,9 +3,8 @@
     <transaction-item
       @updateTransaction="$emit('updateTransaction', $event)"
       @updateGroup="$emit('updateGroup', $event)"
-      @getTransactionId="$emit('getTransactionId',$event)"
-      @getGroupId="$emit('getGroupId',$event)"
-
+      @getTransactionId="$emit('getTransactionId', $event)"
+      @getGroupId="$emit('getGroupId', $event)"
       v-for="transaction in transactions.transactions"
       :key="transaction.id"
       :transactionId="transaction.id"
@@ -16,10 +15,7 @@
     ></transaction-item>
   </base-list-card>
 
-  <pagination
-    v-if="!isFetching"
-    :pageInfo="transactions.pageInfo"
-  ></pagination>
+  <pagination v-if="!isFetching" :pageInfo="transactions.pageInfo"></pagination>
 </template>
 
 <script>
@@ -27,8 +23,8 @@ import TransactionItem from "./TransactionItem.vue";
 import Pagination from "./Pagination.vue";
 
 export default {
-  props: ["transactions", "isFetching"],
-  emits: ["updateTransaction", "updateGroup","getTransactionId","getGroupId"],
+  props: ["transactions", "isFetching", "key"],
+  emits: ["updateTransaction", "updateGroup", "getTransactionId", "getGroupId"],
   components: { TransactionItem, Pagination },
   setup() {},
 };

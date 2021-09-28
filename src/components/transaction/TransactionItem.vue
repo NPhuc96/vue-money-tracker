@@ -1,11 +1,11 @@
 <template>
   <div
-    class="shadow-lg border-2 border-indigo-200 rounded-xl mb-3 "
+    class="shadow-lg border-2 border-indigo-200 rounded-xl mb-3"
     :class="levelsOfBg()"
   >
     <button @click="show" class="flex flex-col flex-wrap w-full font-medium">
       <div class="flex flex-row gap-1 w-full text-left">
-        <div class="w-1/3 pb-2 ">
+        <div class="w-1/3 pb-2">
           {{ day }} {{ month }}
           <div>{{ year }}</div>
         </div>
@@ -31,12 +31,9 @@
       </div>
     </button>
     <div v-if="isShow">
-      <div
-        v-if="!isGroupNull"
-        class="flex flex-row flex-wrap pb-1 text-left w-full"
-      >
-        <div class="w-1/4 font-medium">{{ group.name }}</div>
-        <div class="w-1/4 pr-4">
+      <div v-if="!isGroupNull" class="flex flex-row pb-1 text-left w-full">
+        <div class="w-1/3 font-medium">{{ group.name }}</div>
+        <div class="w-1/3 pr-4">
           <button @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
             <img src="../../assets/edit.svg" />
           </button>

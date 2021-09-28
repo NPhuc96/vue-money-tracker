@@ -6,23 +6,19 @@ const LOGIN = "/login";
 
 export default {
   async signup(context, payload) {
-    const response = await axios.post(REGISTER, {
+    await axios.post(REGISTER, {
       email: payload.email,
       password: payload.password,
       matchingPassword: payload.matchingPassword,
     });
-    const result = await response.data;
-    console.log("Result from signup : " + result);
   },
 
   async confirmEmailToken(context, payload) {
-    const response = await axios.post(
+    await axios.post(
       REGISTER_CONFIRMATION,
       {},
       { params: { token: payload.token, userId: payload.userId } }
     );
-    const result = await response.data;
-    console.log(result);
   },
 
   async login(context, payload) {

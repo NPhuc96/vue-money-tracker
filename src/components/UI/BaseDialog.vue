@@ -24,8 +24,12 @@
       </header>
       <div class="border-t border-indigo-200">
         <div class="py-4 mx-auto flex w-1/2 gap-8 text-white text-medium">
-          <div class="bg-indigo-500 rounded-md px-1"><button @click.prevent="deleteItem">Yes</button></div>
-          <div class="bg-red-400 rounded-md px-1"><button @click.prevent="toggleDialog">No</button></div>
+          <div class="bg-indigo-500 rounded-md px-1">
+            <button @click.prevent="deleteItem">Yes</button>
+          </div>
+          <div class="bg-red-400 rounded-md px-1">
+            <button @click.prevent="toggleDialog">No</button>
+          </div>
         </div>
       </div>
     </div>

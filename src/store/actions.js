@@ -1,5 +1,5 @@
-export default{
-    forceUpdate(context,payload){
-        context.commit("setKey", payload);
-    }
-}
+export default {
+  forceUpdate(context, payload) {
+    context.commit("setKey", payload);
+  },
+};

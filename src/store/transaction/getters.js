@@ -2,13 +2,13 @@ export default {
   transactions(state) {
     return state.transactions;
   },
-  transaction(state){
+  transaction(state) {
     return state.transaction;
   },
-  groups(state){
+  groups(state) {
     return state.groups;
   },
-  group(state){
+  group(state) {
     return state.group;
-  }
+  },
 };

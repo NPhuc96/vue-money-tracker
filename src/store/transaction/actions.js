@@ -18,7 +18,6 @@ export default {
     };
     const response = await axios.post(GET_TRANSACTIONS, request);
     const result = await response.data;
-    console.log(result);
     context.commit("setTransactions", result);
   },
   async getTransaction(context, id) {
@@ -33,7 +32,6 @@ export default {
       }
     );
     const result = await response.data;
-    console.log(result);
     context.commit("setTransaction", result);
   },
   async getGroups(context) {
@@ -48,7 +46,6 @@ export default {
     );
 
     const result = await response.data;
-    console.log(result);
     context.commit("setGroups", result);
   },
   async getGroup(context, id) {
@@ -63,7 +60,7 @@ export default {
       }
     );
     const result = await response.data;
-    console.log(result);
+
     context.commit("setGroup", result);
   },
   async saveTransaction(context, payload) {
@@ -75,9 +72,7 @@ export default {
       groups: payload.groups,
       userId: localStorage.getItem("user_id"),
     };
-    const response = await axios.post(ADD_TRANSACTION, transaction);
-    const result = await response.data;
-    console.log(result);
+    await axios.post(ADD_TRANSACTION, transaction);
   },
   async saveGroup(context, payload) {
     const group = {
@@ -87,7 +82,6 @@ export default {
     };
     const response = await axios.post(ADD_GROUP, group);
     const result = await response.data;
-    console.log(result);
     context.commit("pushGroup", result);
   },
   async deleteTransaction(context, id) {

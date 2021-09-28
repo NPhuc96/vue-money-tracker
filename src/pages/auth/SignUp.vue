@@ -16,12 +16,12 @@
       placeHolder="re-enter password"
       v-model:value.trim="signup.matchingPassword"
     />
-    
+
     <div class="text-xs">
       <p v-if="isError" class="text-red-400">{{ error }}</p>
       <p v-else-if="isSuccess" class="text-green-500">
-      {{ success }}
-    </p>
+        {{ success }}
+      </p>
     </div>
 
     <base-button>Register</base-button>
@@ -70,7 +70,6 @@ export default {
       } catch (err) {
         checkError(err);
       }
-
     }
 
     function validateEmail() {

@@ -40,8 +40,8 @@ export default {
 
     async function save() {
       validate();
-      try {      
-          await store.dispatch("login", login);
+      try {
+        await store.dispatch("login", login);
       } catch (err) {
         if (err.response) {
           checkError400(err);

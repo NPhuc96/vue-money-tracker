@@ -8,16 +8,16 @@ module.exports = {
       colors: {
         transparent: "transparent",
         current: "currentColor",
-        gray: colors.blueGray
+        gray: colors.blueGray,
       },
-      inset:{
-        '15': '15%',
-        '25': '25%',
-        '30': '30%',
-        '35': '35%',
-        '40': '40%',
-        '45': '45%',
-      }
+      inset: {
+        15: "15%",
+        25: "25%",
+        30: "30%",
+        35: "35%",
+        40: "40%",
+        45: "45%",
+      },
     },
     screens: {
       sm: "320px",

@@ -12,12 +12,12 @@
       xl:left-35
     "
   >
-    <div class="text-right w-full border-b-2 border-indigo-100">
+    <div class="text-right w-full border-2 border-indigo-200">
       <button @click="switchToHome" class="text-red-400 font-medium mr-2">
         Close
       </button>
     </div>
-    <div class="mx-auto flex text-center">
+    <div class="mx-auto flex text-center border-b-2 border-blue-200">
       <div
         class="w-1/2"
         :class="{ 'bg-indigo-100 ring-2 ring-indigo-200': isTransactionTab }"

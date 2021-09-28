@@ -1,27 +1,31 @@
 <template>
-  <div class="mx-auto flex gap-x-1 w-1/3 p-1 text-sm text-center">
+  <p v-if="isEmpty" class="font-medium w-1/3 mx-auto">There nothing to show</p>
+  <div
+    class="mx-auto flex gap-x-1 w-1/3 p-1 text-sm text-center"
+    v-if="!isEmpty"
+  >
     <base-anchor v-if="isFirst">
-      <router-link  @click="first" to="">First</router-link>
+      <router-link @click="first" to="">First</router-link>
     </base-anchor>
     <base-anchor v-if="hasPrev">
-      <router-link  @click="prev" to="">Prev</router-link>
+      <router-link @click="prev" to="">Prev</router-link>
     </base-anchor>
 
-    <base-anchor v-for="pageNumber in paginate" :key="pageNumber" :class="{ 'bg-blue-500 text-white': isCurrentPage(pageNumber) }">
-      <router-link
-        
-        to=""
-        @click="changePage(pageNumber)"
-      >
+    <base-anchor
+      v-for="pageNumber in paginate"
+      :key="pageNumber"
+      :class="{ 'bg-blue-500 text-white': isCurrentPage(pageNumber) }"
+    >
+      <router-link to="" @click="changePage(pageNumber)">
         {{ pageNumber }}
       </router-link>
     </base-anchor>
 
-    <base-anchor  v-if="hasNext">
+    <base-anchor v-if="hasNext">
       <router-link @click="next" to="">Next</router-link>
     </base-anchor>
     <base-anchor v-if="isLast">
-      <router-link  @click="last" to="">Last</router-link>
+      <router-link @click="last" to="">Last</router-link>
     </base-anchor>
   </div>
 </template>
@@ -36,25 +40,28 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const totalPages = ref(props.pageInfo.totalPages);
-    const page = computed(() => +route.query.page ||1);
-    const size = computed(() => +route.query.size ||10);
+    const page = computed(() => +route.query.page || 1);
+    const size = computed(() => +route.query.size || 10);
+    const hasPrev = computed(() => page.value - 1 > 0);
+    const hasNext = computed(() => page.value + 1 <= totalPages.value);
+    const isFirst = computed(() => page.value != 1);
+    const isLast = computed(
+      () => page.value != totalPages.value && totalPages.value != 0
+    );
+    const isEmpty = computed(() => props.pageInfo.totalElements === 0);
     let startPage = 1;
     let endPage = 5;
-    const hasPrev = computed(() => page.value - 1 > 0);
-    const hasNext = computed(() =>page.value + 1 <= totalPages.value);
-    const isFirst = computed(()=>page.value !=1);
-    const isLast = computed(()=>page.value != totalPages.value);
     function next() {
       router.push({ query: { page: page.value + 1, size: size.value } });
     }
     function prev() {
       router.push({ query: { page: page.value - 1, size: size.value } });
     }
-    function first(){
-      router.push({query:{page:1,size:size.value}});
+    function first() {
+      router.push({ query: { page: 1, size: size.value } });
     }
-    function last(){
-      router.push({query:{page:totalPages.value,size:size.value}});
+    function last() {
+      router.push({ query: { page: totalPages.value, size: size.value } });
     }
     function changePage(pageNumber) {
       router.push({
@@ -110,6 +117,7 @@ export default {
       isLast,
       next,
       prev,
+      isEmpty,
       changePage,
       isCurrentPage,
       paginate,

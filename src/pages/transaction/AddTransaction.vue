@@ -2,7 +2,14 @@
   <form @submit.prevent="saveTransaction" class="w-2/3 mx-auto py-2">
     <select
       v-model="groupSelected"
-      class="focus:outline-none box-border w-full mb-1.5 bg-blue-100 border-b border-indigo-300"
+      class="
+        focus:outline-none
+        box-border
+        w-full
+        mb-1.5
+        bg-blue-100
+        border-b border-indigo-300
+      "
     >
       <option value="" selected disabled>Your group</option>
       <option v-for="group in groups" :key="group.id" :value="group">
@@ -25,12 +32,18 @@
       placeHolder="Your note"
       v-model:value.trim="enteredNote"
     />
+    <div class="text-xs">
+      <p class="text-red-400" v-if="isError">
+        {{ error }}
+      </p>
+      <p class="text-green-500" v-else-if="isSuccess">Saved</p>
+    </div>
     <base-button type="submit">Save</base-button>
   </form>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
@@ -43,8 +56,14 @@ export default {
     const enteredAmount = ref();
     const enteredNote = ref();
     const groupSelected = ref("");
-    const error = ref();
-    const isError = ref();
+    let isError = ref(false);
+    let error = ref("");
+    const errors = reactive({
+      date: "Date can't be blank",
+      amount: "Amount can't be blank or number",
+    });
+    let isSuccess = ref(false);
+
     const groups = computed(() => store.getters.groups);
     const transaction = computed(() => store.getters.transaction);
     let id = computed(() => route.query.id || undefined);
@@ -69,17 +88,55 @@ export default {
         return (groupSelected.value = null);
       }
     }
-    function saveTransaction() {
+    async function saveTransaction() {
       checkEmptyGroup();
-      const formData = {
+      validate();
+      try {
+        if (!isError.value) {
+          await store.dispatch("saveTransaction", formData());
+          isSuccess.value = true;
+        }
+      } catch (err) {
+        throwError("Something went wrong");
+      }
+    }
+    function formData() {
+      return {
         id: id.value,
         onDate: enteredDate.value,
         amount: enteredAmount.value,
         note: enteredNote.value,
         groups: JSON.parse(JSON.stringify(groupSelected.value)),
       };
-      store.dispatch("saveTransaction", formData);
-      store.dispatch("forceUpdate", +1);
+    }
+    function validate() {
+      validateDate(enteredDate.value);
+      validateAmount(enteredAmount.value);
+    }
+    function validateDate(date) {
+      if (isEmpty(date) || isBlank(date)) {
+        throwError(errors.date);
+      } else setBack();
+    }
+
+    function validateAmount(amount) {
+      console.log(isEmpty(amount) || isBlank(amount) || isNaN(amount));
+      if (isEmpty(amount) || isBlank(amount) || isNaN(amount)) {
+        throwError(errors.amount);
+      } else setBack();
+    }
+    function isBlank(str) {
+      return /^\s*$/.test(str);
+    }
+    function isEmpty(str) {
+      return !str || str.length === 0;
+    }
+    function throwError(message) {
+      isError.value = true;
+      error.value = message;
+    }
+    function setBack() {
+      isError.value = false;
     }
 
     return {
@@ -89,6 +146,9 @@ export default {
       groups,
       groupSelected,
       saveTransaction,
+      isError,
+      isSuccess,
+      error,
     };
   },
 };

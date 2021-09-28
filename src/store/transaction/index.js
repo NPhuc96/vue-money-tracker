@@ -6,10 +6,9 @@ export default {
   state() {
     return {
       transactions: null,
-      transaction : null,
+      transaction: null,
       groups: [],
-      group : null
-      
+      group: null,
     };
   },
   actions,

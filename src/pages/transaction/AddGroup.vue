@@ -5,6 +5,12 @@
       placeHolder="New group"
       v-model:value.trim="enteredGroup"
     />
+    <div class="text-xs">
+      <p class="text-red-400" v-if="isError">
+        {{ error }}
+      </p>
+      <p class="text-green-500" v-else-if="isSuccess">Saved</p>
+    </div>
     <base-button type="submit">Save</base-button>
   </form>
 </template>
@@ -20,6 +26,10 @@ export default {
     const enteredGroup = ref();
     let group = computed(() => store.getters.group);
     let id = computed(() => route.query.id || undefined);
+    let isError = ref(false);
+    let error = ref("Can't be empty");
+    let isSuccess = ref(false);
+
     getGroup();
     async function getGroup() {
       if (id.value !== undefined) {
@@ -34,12 +44,36 @@ export default {
       }
     }
 
-    function saveGroup() {
-      store.dispatch("saveGroup", { id: id.value, name: enteredGroup.value });
-      store.dispatch("forceUpdate", +1);
-      getGroup();
+    async function saveGroup() {
+      validate(enteredGroup.value);
+      try {
+        if (!isError.value) {
+          await store.dispatch("saveGroup", {
+            id: id.value,
+            name: enteredGroup.value,
+          });
+          isSuccess.value = true;
+        }
+      } catch (err) {
+        throwError("Something went wrong");
+      }
     }
-    return { enteredGroup, saveGroup };
+    function validate(name) {
+      if (isEmpty(name) || isBlank(name)) {
+        throwError(error.value);
+      } else isError.value = false;
+    }
+    function isBlank(str) {
+      return /^\s*$/.test(str);
+    }
+    function isEmpty(str) {
+      return !str || str.length === 0;
+    }
+    function throwError(message) {
+      isError.value = true;
+      error.value = message;
+    }
+    return { enteredGroup, saveGroup, isError, isSuccess, error };
   },
 };
 </script>

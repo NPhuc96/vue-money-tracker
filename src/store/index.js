@@ -5,7 +5,6 @@ import actions from "./actions";
 import getters from "./getters";
 import mutations from "./mutations";
 
-
 const store = createStore({
   modules: {
     auth: authModule,
@@ -13,7 +12,7 @@ const store = createStore({
   },
   state() {
     return {
-      key: 0
+      key: 0,
     };
   },
   actions,

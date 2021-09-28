@@ -30,7 +30,7 @@ const router = createRouter({
       name: "auth",
       children: [
         { path: "login", component: Login, name: "login" },
-        { path: "signup", component: Signup, name: "signup" }
+        { path: "signup", component: Signup, name: "signup" },
       ],
     },
     {
