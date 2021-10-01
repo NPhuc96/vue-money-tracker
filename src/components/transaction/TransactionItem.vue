@@ -1,7 +1,7 @@
 <template>
   <div
+    :class="levelsOfBg"
     class="shadow-lg border-2 border-indigo-200 rounded-xl mb-3"
-    :class="levelsOfBg()"
   >
     <button @click="show" class="flex flex-col flex-wrap w-full font-medium">
       <div class="flex flex-row gap-1 w-full text-left">
@@ -71,26 +71,14 @@ export default {
     },
   },
   setup(props) {
-    const monthNames = ref([
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ]);
+    let gray = ref("bg-gray-50");
+    let lightestRed = ref("bg-red-50");
+    let lightRed = ref("bg-red-100");
+    let red = ref("bg-red-200");
     let isShow = ref(false);
     let isGroupNull = computed(() => props.group == undefined);
     const year = computed(() => props.onDate.substring(0, 4));
-    const month = computed(
-      () => monthNames.value[props.onDate.substring(6, 7) - 1]
-    );
+    const month = computed(() => getMonthName());
     const day = computed(() => props.onDate.substring(8, 10));
     const money = computed(() =>
       new Intl.NumberFormat("vi-VN", {
@@ -98,26 +86,29 @@ export default {
         currency: "VND",
       }).format(props.amount)
     );
+    function getMonthName() {
+      let monthName = new Intl.DateTimeFormat("en-US", { month: "short" })
+        .format;
+      return monthName(new Date(props.onDate));
+    }
     function show() {
       isShow.value = !isShow.value;
     }
-    function levelsOfBg() {
-      if (isRed(1, 10, 6)) {
-        return level("gray", 50);
-      } else if (isRed(3, 10, 6)) {
-        return level("red", 50);
-      } else if (isRed(5, 10, 6)) {
-        return level("red", 100);
+    let levelsOfBg = computed(() => {
+      if (calculateColor(1, 10, 6)) {
+        return gray.value;
+      } else if (calculateColor(3, 10, 6)) {
+        return lightestRed.value;
+      } else if (calculateColor(5, 10, 6)) {
+        return lightRed.value;
       } else {
-        return level("red", 200);
+        return red.value;
       }
-    }
-    function isRed(number, base, exponent) {
+    });
+    function calculateColor(number, base, exponent) {
       return props.amount <= number * Math.pow(base, exponent);
     }
-    function level(color, level) {
-      return `bg-${color}-${level}`;
-    }
+
     return { year, month, day, money, isShow, show, isGroupNull, levelsOfBg };
   },
 };

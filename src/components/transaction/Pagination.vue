@@ -73,7 +73,7 @@ export default {
     }
 
     const paginate = computed(() => {
-      if (totalPages.value <= 5) {
+      if (totalPages.value <= 4) {
         return totalLessThanDefault();
       } else {
         return totalGreaterThanDefault();

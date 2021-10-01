@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-1/2 mx-auto md:w-full" :key="key">
+  <div class="lg:w-3/4 mx-auto md:w-full" :key="key">
     <base-dialog
       :showDialog="showDialog"
       :deleteItem="deleteItem"
@@ -51,8 +51,8 @@ export default {
       getTransaction();
     });
     getTransaction();
-    function getTransaction() {
-      store.dispatch("getTransactions", pageRequest);
+    async function getTransaction() {
+      await store.dispatch("getTransactions", pageRequest);
     }
     let isFetching = computed(() => {
       return transactions.value ? false : true;

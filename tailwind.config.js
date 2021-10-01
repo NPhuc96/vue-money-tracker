@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         transparent: "transparent",
         current: "currentColor",
-        gray: colors.blueGray,
+        gray: colors.blueGray
       },
       inset: {
         15: "15%",
@@ -22,8 +22,8 @@ module.exports = {
     screens: {
       sm: "320px",
       md: "640px",
-      lg: "1024px",
-      xl: "1280px",
+      lg: "960px",
+      xl: "1180px",
     },
   },
   variants: {
