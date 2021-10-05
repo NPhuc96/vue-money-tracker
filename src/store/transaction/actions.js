@@ -1,5 +1,6 @@
 import axios from "../../api/Client";
 
+
 const GET_TRANSACTIONS = "/transactions";
 const ADD_TRANSACTION = "/transaction/add";
 const GET_TRANSACTION = "/transaction";
@@ -8,6 +9,7 @@ const GET_GROUPS = "/groups";
 const ADD_GROUP = "/group/add";
 const GET_GROUP = "/group";
 const DELETE_GROUP = "/group/delete";
+const REPORT = "/report"
 
 export default {
   async getTransactions(context, pageRequest) {
@@ -98,4 +100,16 @@ export default {
     };
     await axios.delete(DELETE_GROUP, { params: group });
   },
+  async getReport(context,payload){
+    const report = {
+      month: payload.month,
+      year: payload.year,
+      userId: localStorage.getItem("user_id")
+    };
+    const response = await axios.post(REPORT,report);
+    const result = await response.data;
+    context.commit("setReport", result);
+    
+    
+  }
 };

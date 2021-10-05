@@ -9,6 +9,7 @@ export default {
       transaction: null,
       groups: [],
       group: null,
+      report : null,
     };
   },
   actions,

@@ -6,6 +6,7 @@ import Signup from "./pages/auth/SignUp.vue";
 import Confirmation from "./pages/auth/Confirmation.vue";
 import AddTransaction from "./pages/transaction/AddTransaction.vue";
 import AddGroup from "./pages/transaction/AddGroup.vue";
+import Reports from "./pages/transaction/Reports.vue";
 import moment from "moment-timezone";
 
 const router = createRouter({
@@ -56,6 +57,12 @@ const router = createRouter({
       name: "confirmation",
       meta: { title: "Confirmation" },
     },
+    {
+      path: "/reports",
+      component: Reports,
+      name: "reports",
+      meta: {title: "Reports"}
+    }
   ],
 });
 router.beforeEach((to, from, next) => {

@@ -11,6 +11,7 @@ import BaseFormCard from "./components/UI/BaseFormCard.vue";
 
 import store from "./store/index";
 import router from "./router";
+import VueApexCharts from "vue3-apexcharts";
 
 import "./assets/tailwind.css";
 
@@ -24,6 +25,7 @@ app.component("base-backdrop", BaseBackdrop);
 app.component("base-dialog", BaseDialog);
 app.component("base-form-card", BaseFormCard);
 
+app.use(VueApexCharts);
 app.use(router);
 app.use(store);
 app.mount("#app");
