@@ -1,20 +1,19 @@
 <template>
-  <div class="flex  w-2/3 mx-auto mt-3 border-b-2 border-blue-100 ">
-    <div class="mt-3 pl-4 w-1/4">
-      <router-link :to="{ name: 'home' }" class="w-1/3"
+  <div class="flex mt-1 mx-auto border-b-2 border-blue-100">
+    <div class="w-1/4 ml-5">
+      <router-link :to="{ name: 'home' }"
         ><img src="../../assets/home.svg"
       /></router-link>
     </div>
-    <div class=" mt-3 pl-4 w-1/2" v-if="isLoggedIn">
-      <button @click="switchToReport" class="mr-5">
-        <img src="../../assets/pie_chart.svg"/>
+    <div class="w-1/2" v-if="isLoggedIn">
+      <button @click="switchToReport" class="w-1/2">
+        <img src="../../assets/report.svg" />
       </button>
-      <button @click="switchToTransaction" class="ml-5">
+      <button @click="switchToTransaction" class="w-1/2">
         <img src="../../assets/add.svg" />
       </button>
-      
     </div>
-    <div class="mt-3 pl-4">
+    <div class="w-1/4">
       <button v-if="isLoggedIn" @click="logout">
         <img src="../../assets/logout.svg" />
       </button>
@@ -23,7 +22,6 @@
       /></router-link>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -32,7 +30,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
-  props: ["switchToTransaction","switchToReport"],
+  props: ["switchToTransaction", "switchToReport"],
 
   setup() {
     const store = useStore();

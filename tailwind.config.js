@@ -1,4 +1,3 @@
-const { lime } = require("tailwindcss/colors");
 const colors = require("tailwindcss/colors");
 module.exports = {
   purge: { content: ["./public/**/*.html", "./src/**/*.vue"] },
@@ -8,15 +7,18 @@ module.exports = {
       colors: {
         transparent: "transparent",
         current: "currentColor",
-        gray: colors.blueGray
+        gray: colors.blueGray,
       },
       inset: {
         15: "15%",
         25: "25%",
         30: "30%",
         35: "35%",
-        40: "40%",
         45: "45%",
+      },
+      width: {
+        40: "40%",
+        30: "35%",
       },
     },
     screens: {

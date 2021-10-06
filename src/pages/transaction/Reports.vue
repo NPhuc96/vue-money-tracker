@@ -1,39 +1,70 @@
 <template>
-  <div v-if="!isLoading" class="w-1/2 mx-auto">
-    <apexchart width="500" :options="options" :series="series"></apexchart>
+  <div class="mt-5 mx-auto sm:w-full md:w-1/2 lg:w-40 xl-30" v-if="!isLoading">
+    <div class="flex ml-3">
+      <div class="pr-2">
+        <select
+          v-model="dateSelected"
+          class="border border-indigo-200 bg-gray-50 focus:outline-none"
+        >
+          <option v-for="month in lastFiveMonth" :key="month" :value="month">
+            {{ month }}
+          </option>
+        </select>
+      </div>
+      <div class="font-medium">Total : {{ spentOfMonth }}</div>
+    </div>
+    <apexchart
+      class="mt-3"
+      width="400"
+      :options="options"
+      :series="series"
+    ></apexchart>
   </div>
 </template>
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import { ref, computed, watch, reactive } from "vue";
+import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 
 export default {
-  name: "Report",
-
   setup() {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const getReport = async () => await store.dispatch("getReport", time);
-    const report = computed(() => store.getters.report);
-    let isLoading = computed(() => {
-      if (report.value) {
-        return false;
-      }
-      return true;
-    });
-    let month = computed(
-      () => +route.query.month || +9 /* +moment().format("MM") */
-    );
-    let year = computed(() => +route.query.year || +moment().format("YYYY"));
-    let time = reactive({
-      month: month.value,
-      year: year.value,
-    });
+    let month = computed(() => route.query.month || moment().format("MM"));
+    let year = computed(() => route.query.year || moment().format("YYYY"));
+    const getReport = async () => {
+      await store.dispatch("getReport", {
+        month: month.value,
+        year: year.value,
+      });
+    };
     getReport();
+    intitalParam();
+    const report = computed(() => store.getters.report);
+
+    let dateSelected = ref(month.value + "/" + year.value);
+    let isLoading = computed(() => (report.value ? false : true));
+    const spentOfMonth = computed(() =>
+      new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(report.value.spentOfMonth)
+    );
+    const lastFiveMonth = computed(() => {
+      let lastFiveMonth = [];
+      for (let n = 0; n <= 5; n++) {
+        lastFiveMonth.push(moment().subtract(n, "months").format("MM/YYYY"));
+      }
+      return lastFiveMonth;
+    });
+
+    watch([dateSelected, month, year], () => {
+      pushParam(dateSelected.value);
+      getReport();
+    });
 
     const series = computed(() => [{ data: report.value.spentOfWeek }]);
     const options = computed(() => ({
@@ -55,18 +86,44 @@ export default {
       xaxis: {
         categories: report.value.weekOfMonth,
       },
-      yaxis:{
-         labels: {
+      yaxis: {
+        labels: {
           show: true,
-           formatter: (value) => { return yLabels(value)}
-      }
-      }
+          formatter: (value) => {
+            return yLabels(value);
+          },
+        },
+      },
     }));
-    function yLabels(value) {  
-        return value.toLocaleString('vi-VN');
-  
+    function yLabels(value) {
+      return value.toLocaleString("vi-VN");
     }
-    return { isLoading, series, options };
+    function pushParam(dateSelected) {
+      if (route.name != "reports") {
+        router.push({ name: route.name });
+      } else
+        router.push({
+          name: "reports",
+          query: {
+            month: dateSelected.substring(0, 2),
+            year: dateSelected.substring(3),
+          },
+        });
+    }
+    function intitalParam() {
+      router.push({
+        name: "reports",
+        query: { month: month.value, year: year.value },
+      });
+    }
+    return {
+      isLoading,
+      series,
+      options,
+      spentOfMonth,
+      lastFiveMonth,
+      dateSelected,
+    };
   },
 };
 </script>

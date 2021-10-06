@@ -14,7 +14,7 @@ export default {
   pushGroup(state, payload) {
     state.groups.push(payload);
   },
-  setReport(state,payload){
+  setReport(state, payload) {
     state.report = payload;
-  }
+  },
 };

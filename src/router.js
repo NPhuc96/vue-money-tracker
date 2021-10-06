@@ -61,8 +61,8 @@ const router = createRouter({
       path: "/reports",
       component: Reports,
       name: "reports",
-      meta: {title: "Reports"}
-    }
+      meta: { title: "Reports" },
+    },
   ],
 });
 router.beforeEach((to, from, next) => {
@@ -71,7 +71,6 @@ router.beforeEach((to, from, next) => {
     next({ name: "login" });
   } else next();
 });
-
 
 const isAuthenticated = () => {
   return localStorage.getItem("token");

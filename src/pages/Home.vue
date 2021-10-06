@@ -6,7 +6,7 @@
       :toggleDialog="toggleDialog"
     >
     </base-dialog>
-    <main id="main" :key="key">   
+    <main id="main" :key="key">
       <the-addition v-if="isShow" :switchToHome="switchToHome" />
       <transaction-list
         @updateTransaction="updateTransaction"

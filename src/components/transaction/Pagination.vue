@@ -1,7 +1,7 @@
 <template>
-  <p v-if="isEmpty" class="font-medium w-1/3 mx-auto">There nothing to show</p>
+  <p v-if="isEmpty" class="font-medium mx-auto">There nothing to show</p>
   <div
-    class="mx-auto flex gap-x-1 w-1/3 p-1 text-sm text-center"
+    class="mx-auto ml-4 flex gap-1 sm:text-sm md:text-base text-center"
     v-if="!isEmpty"
   >
     <base-anchor v-if="isFirst">

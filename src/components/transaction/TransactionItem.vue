@@ -95,11 +95,11 @@ export default {
       isShow.value = !isShow.value;
     }
     let levelsOfBg = computed(() => {
-      if (calculateColor(1, 10, 6)) {
+      if (calculateColor(2, 10, 5)) {
         return gray.value;
-      } else if (calculateColor(3, 10, 6)) {
+      } else if (calculateColor(5, 10, 5)) {
         return lightestRed.value;
-      } else if (calculateColor(5, 10, 6)) {
+      } else if (calculateColor(7, 10, 5)) {
         return lightRed.value;
       } else {
         return red.value;

@@ -11,7 +11,7 @@ export default {
   group(state) {
     return state.group;
   },
-  report(state){
+  report(state) {
     return state.report;
-  }
+  },
 };
