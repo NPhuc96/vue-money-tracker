@@ -28,7 +28,7 @@ export default {
       {
         params: {
           id: id,
-          userid: localStorage.getItem("user_id"),
+          userId: localStorage.getItem("user_id"),
         },
       }
     );
@@ -41,7 +41,7 @@ export default {
       {},
       {
         params: {
-          userid: localStorage.getItem("user_id"),
+          userId: localStorage.getItem("user_id"),
         },
       }
     );
@@ -56,7 +56,7 @@ export default {
       {
         params: {
           id: id,
-          userid: localStorage.getItem("user_id"),
+          userId: localStorage.getItem("user_id"),
         },
       }
     );
@@ -88,14 +88,14 @@ export default {
   async deleteTransaction(context, id) {
     const transaction = {
       id: id,
-      userid: localStorage.getItem("user_id"),
+      userId: localStorage.getItem("user_id"),
     };
     await axios.delete(DELETE_TRANSACTION, { params: transaction });
   },
   async deleteGroup(context, id) {
     const group = {
       id: id,
-      userid: localStorage.getItem("user_id"),
+      userId: localStorage.getItem("user_id"),
     };
     await axios.delete(DELETE_GROUP, { params: group });
   },
