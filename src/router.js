@@ -3,6 +3,7 @@ import Home from "./pages/Home.vue";
 import Authentication from "./pages/auth/Authentication.vue";
 import Login from "./pages/auth/Login.vue";
 import Signup from "./pages/auth/SignUp.vue";
+import PasswordReset from "./pages/auth/PasswordReset.vue";
 import Confirmation from "./pages/auth/Confirmation.vue";
 import AddTransaction from "./pages/transaction/AddTransaction.vue";
 import AddGroup from "./pages/transaction/AddGroup.vue";
@@ -48,6 +49,12 @@ const router = createRouter({
           component: Signup,
           name: "signup",
           meta: { title: "Sign Up" },
+        },
+        {
+          path: "reset",
+          component: PasswordReset,
+          name: "passwordReset",
+          meta: { title: "Password Reset" },
         },
       ],
     },

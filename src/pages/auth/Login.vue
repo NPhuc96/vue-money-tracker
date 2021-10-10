@@ -5,14 +5,19 @@
       placeHolder="enter email"
       v-model:value.trim="login.email"
     />
-
     <base-input
       type="password"
       placeHolder="enter password"
       v-model:value.trim="login.password"
     />
-    <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
-
+    <div class="text-xs py-2">
+      <p v-if="isError" class="text-red-500">{{ error }}</p>
+      <div class="font-thin ml-20">
+        <router-link :to="{ name: 'passwordReset', query: { step: 1 } }"
+          >Reset password?
+        </router-link>
+      </div>
+    </div>
     <base-button>Login </base-button>
   </form>
 </template>

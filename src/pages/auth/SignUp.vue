@@ -31,14 +31,13 @@
 <script>
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
+import { mail, password } from "../../common/Patterns";
 
 export default {
   setup() {
     const store = useStore();
-    const emailPattern = ref(
-      /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/
-    );
-    const passwordPattern = ref(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
+    const emailPattern = ref(mail);
+    const passwordPattern = ref(password);
     const success = ref("A confirmation email has been sent");
     let isError = ref(false);
     let isSuccess = ref(false);
@@ -93,7 +92,6 @@ export default {
     }
 
     function checkError(err) {
-      console.log(err.response);
       if (err.response.status >= 400) {
         throwError(err.response.data.errorMessage);
       }

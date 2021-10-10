@@ -5,7 +5,6 @@
     :switchToReport="switchToReport"
   />
   <router-view />
-  <the-footer />
 </template>
 
 <script>

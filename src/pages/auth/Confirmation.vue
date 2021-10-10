@@ -25,7 +25,6 @@ export default {
       token: route.query.token,
       userId: +route.query.userId,
     });
-    console.log(confirmation);
     async function confirmToken() {
       try {
         await store.dispatch("confirmEmailToken", confirmation);

@@ -120,7 +120,6 @@ export default {
     }
 
     function validateAmount(amount) {
-      console.log(isEmpty(amount) || isBlank(amount) || isNaN(amount));
       if (isEmpty(amount) || isBlank(amount) || isNaN(amount)) {
         throwError(errors.amount);
       } else setBack();
