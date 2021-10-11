@@ -19,13 +19,17 @@
             @click.prevent="$emit('updateTransaction', transactionId)"
             class="w-1/2"
           >
-            <img src="../../assets/edit.svg" />
+            <base-sub-svg class="fill-current hover:text-blue-500">
+            <path :d="edit"/>
+            </base-sub-svg>
           </button>
           <button
             @click.prevent="$emit('getTransactionId', transactionId)"
             class="w-1/2"
           >
-            <img src="../../assets/delete.svg" />
+            <base-sub-svg class="fill-current hover:text-red-600">
+            <path :d="del"/>
+            </base-sub-svg>
           </button>
         </div>
       </div>
@@ -35,10 +39,14 @@
         <div class="w-1/3 font-medium">{{ group.name }}</div>
         <div class="w-1/3 pr-4">
           <button @click.prevent="$emit('updateGroup', group.id)" class="w-1/2">
-            <img src="../../assets/edit.svg" />
+            <base-sub-svg class="fill-current hover:text-blue-500">
+            <path :d="edit"/>
+            </base-sub-svg>
           </button>
           <button @click.prevent="$emit('getGroupId', group.id)" class="w-1/2">
-            <img src="../../assets/delete.svg" />
+            <base-sub-svg class="fill-current hover:text-red-600">
+            <path :d="del"/>
+            </base-sub-svg>
           </button>
         </div>
       </div>
@@ -48,6 +56,7 @@
 
 <script>
 import { ref, computed } from "vue";
+import {editPath,deletePath} from "../../common/SvgPath";
 
 export default {
   emits: ["updateTransaction", "updateGroup", "getTransactionId", "getGroupId"],
@@ -71,6 +80,8 @@ export default {
     },
   },
   setup(props) {
+    const edit = ref(editPath);
+    const del = ref(deletePath);
     let gray = ref("bg-gray-50");
     let lightestRed = ref("bg-red-50");
     let lightRed = ref("bg-red-100");
@@ -109,7 +120,7 @@ export default {
       return props.amount <= number * Math.pow(base, exponent);
     }
 
-    return { year, month, day, money, isShow, show, isGroupNull, levelsOfBg };
+    return { year, month, day, money, isShow, show, isGroupNull, levelsOfBg,edit,del };
   },
 };
 </script>

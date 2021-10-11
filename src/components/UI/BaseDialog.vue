@@ -6,32 +6,31 @@
       class="
         fixed
         z-50
-        sm:w-3/5
-        md:w-1/3
-        lg:w-1/4
-        xl:w-1/5
-        bg-blue-100
-        rounded-lg
-        shadow-lg
-        sm:left-30
-        md:left-35
-        lg:left-40
-        top-16
+        bg-white
+        w-full
+        sm:w-7/12
+        md:w-4/12
+        lg:w-3/12  
+        top-20
+        left-4
+        sm:left-16
+        md:left-32
+        lg:left-72
+        xl:left-35
       "
     >
-      <header class="text-left text-sm">
-        Are you sure you want to delete this item?
-      </header>
-      <div class="border-t border-indigo-200">
-        <div class="py-4 mx-auto flex w-1/2 gap-8 text-white text-medium">
-          <div class="bg-indigo-500 rounded-md px-1">
-            <button @click.prevent="deleteItem">Yes</button>
-          </div>
-          <div class="bg-red-400 rounded-md px-1">
-            <button @click.prevent="toggleDialog">No</button>
-          </div>
-        </div>
+      <div class="border border-b py-2 text-center">
+        Confirm Action 
       </div>
+      <div class="border border-b py-3 text-xs font-light text-center">
+        Are you sure about this ?
+      </div>
+      <div class="py-2 w-9/12 mx-auto space-x-6 sm:ml-12 md:ml-16 lg:ml-20">
+        <button class="bg-red-400 text-white px-2 rounded-md text-xs font-light" @click="deleteItem">Ok</button>
+        <button class="bg-blue-400 text-white px-2 rounded-md text-xs font-light" @click="toggleDialog">No</button>
+    </div>  
+      
+            
     </div>
   </teleport>
 </template>

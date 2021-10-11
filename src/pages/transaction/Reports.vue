@@ -1,6 +1,9 @@
 <template>
-  <div class="mt-5 mx-auto sm:w-full md:w-1/2 lg:w-40 xl-30" v-if="!isLoading">
-    <div class="flex ml-3">
+  <div
+    class="mt-6 mx-auto w-full sm:w-90 md:w-9/12 lg:w-1/2 xl:w-45"
+    v-if="!isLoading"
+  >
+    <div class="flex ml-3 sm:ml-6 md:ml-10 lg:ml-12 ">
       <div class="pr-2">
         <select
           v-model="dateSelected"
@@ -14,7 +17,7 @@
       <div class="font-medium">Total : {{ spentOfMonth }}</div>
     </div>
     <apexchart
-      class="mt-3"
+      class="mt-3 ml-3 sm:ml-6 md:ml-10 lg:ml-12"
       width="400"
       :options="options"
       :series="series"
@@ -83,6 +86,22 @@ export default {
       legend: {
         show: false,
       },
+      responsive: [
+        {
+          breakpoint: 300,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: "20%",
+              },
+            },
+            chart: {
+              width: "95%",
+            },
+          },
+        },
+      ],
+
       xaxis: {
         categories: report.value.weekOfMonth,
       },

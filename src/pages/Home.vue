@@ -77,14 +77,14 @@ export default {
       isDeleteTransaction.value = false;
       id.value = groupId;
     }
-    function deleteItem() {
+    async function deleteItem() {
       if (isDeleteTransaction.value) {
-        deleteTransaction();
+        await deleteTransaction();
       } else {
-        deleteGroup();
+        await deleteGroup();
       }
       toggleDialog();
-      store.dispatch("forceUpdate", +1);
+      await store.dispatch("forceUpdate", +1);
     }
     function toggleDialog() {
       showDialog.value = !showDialog.value;

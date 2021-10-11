@@ -1,5 +1,5 @@
 <template>
-  <form class="w-2/3 mx-auto py-2" @submit.prevent="save">
+  <form class="w-9/12 mx-auto py-2" @submit.prevent="save">
     <base-input
       type="text"
       placeHolder="enter email"
@@ -10,13 +10,11 @@
       placeHolder="enter password"
       v-model:value.trim="login.password"
     />
-    <div class="text-xs py-2">
-      <p v-if="isError" class="text-red-500">{{ error }}</p>
-      <div class="font-thin ml-20">
-        <router-link :to="{ name: 'passwordReset', query: { step: 1 } }"
-          >Reset password?
-        </router-link>
-      </div>
+    <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
+    <div class="text-xss md:ml-44 lg:ml-52">
+      <router-link :to="{ name: 'passwordReset', query: { step: 1 } }"
+        >Reset password?
+      </router-link>
     </div>
     <base-button>Login </base-button>
   </form>

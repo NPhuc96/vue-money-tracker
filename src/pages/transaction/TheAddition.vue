@@ -4,17 +4,23 @@
     class="
       fixed
       z-50
-      overflow-auto
-      top-16
-      sm:left-15
-      md:left-25
-      lg:left-1/3
+      w-full
+      sm:w-9/12
+      md:w-6/12
+      lg:w-4/12
+      xl:w-3/12  
+      top-20
+      left-4
+      md:left-32
+      lg:left-72
       xl:left-35
+      overflow-auto
+
     "
   >
     <div class="text-right w-full border-2 border-indigo-200">
-      <button @click="switchToHome" class="text-red-400 font-medium mr-2">
-        Close
+      <button @click="switchToHome" class="font-medium mr-2">
+        x
       </button>
     </div>
     <div class="mx-auto flex text-center border-b-2 border-blue-200">

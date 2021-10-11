@@ -11,14 +11,18 @@ module.exports = {
       },
       inset: {
         15: "15%",
-        25: "25%",
         30: "30%",
         35: "35%",
         45: "45%",
       },
       width: {
-        40: "40%",
-        30: "35%",
+        15: "15%",
+        30: "30%",
+        35: "35%",
+        45: "45%",
+        55: "55%",
+        85: "85%",
+        90: "90%",
       },
     },
     screens: {
@@ -27,11 +31,16 @@ module.exports = {
       lg: "960px",
       xl: "1180px",
     },
+    fontSize: {
+      xss: ".65rem",
+      xxs: ".75rem"
+    },
   },
   variants: {
     extend: {
       ringWidth: ["hover", "active"],
       ringColor: ["hover", "active"],
+      fill: ["hover", "focus"],
     },
   },
   plugins: [
