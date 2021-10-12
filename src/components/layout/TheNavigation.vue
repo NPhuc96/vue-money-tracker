@@ -1,13 +1,18 @@
 <template>
-  <div class="flex gap-4 sm:gap-7 md:gap-16 lg:gap-20 xl:gap-28  mx-auto border-b" :class="{}">
+  <div
+    class="flex gap-4 sm:gap-7 md:gap-16 lg:gap-20 xl:gap-28 mx-auto border-b"
+  >
     <div class="ml-2">
-      <router-link :to="{ name: 'home' }">
+      <button @click="switchToHome">
         <base-svg :isCurrentRoute="isHome">
           <path :d="home" />
         </base-svg>
-      </router-link>
+      </button>
     </div>
-    <div class="flex gap-4 sm:gap-7 md:gap-16 lg:gap-20 xl:gap-28 " v-if="isLoggedIn">
+    <div
+      class="flex gap-4 sm:gap-7 md:gap-16 lg:gap-20 xl:gap-28"
+      v-if="isLoggedIn"
+    >
       <button @click="switchToReport">
         <base-svg :isCurrentRoute="isReport">
           <path :d="report" />
@@ -45,7 +50,7 @@ import {
 } from "../../common/SvgPath";
 
 export default {
-  props: ["switchToTransaction", "switchToReport"],
+  props: ["switchToTransaction", "switchToReport", "switchToHome"],
 
   setup() {
     const store = useStore();
@@ -64,8 +69,8 @@ export default {
     );
     const isReport = computed(() => route.name == "reports");
     function logout() {
-      store.dispatch("logout");
       router.push({ name: "login", query: {} });
+      store.dispatch("logout");
     }
     return {
       isLoggedIn,

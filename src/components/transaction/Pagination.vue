@@ -1,7 +1,7 @@
 <template>
   <p v-if="isEmpty" class="font-medium mx-auto">There nothing to show</p>
   <div
-    class="mx-auto ml-4 flex gap-1 sm:text-sm md:text-base text-center"
+    class="mx-auto ml-2 flex gap-0.5 sm:text-sm md:text-base text-center"
     v-if="!isEmpty"
   >
     <base-anchor v-if="isFirst">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 export default {
@@ -39,9 +39,10 @@ export default {
   setup(props) {
     const route = useRoute();
     const router = useRouter();
-    const totalPages = ref(props.pageInfo.totalPages);
-    const page = computed(() => +route.query.page || 1);
-    const size = computed(() => +route.query.size || 10);
+    const totalPages = computed(() => props.pageInfo.totalPages);
+    const page = computed(() => +route.query.page);
+    const size = computed(() => +route.query.size);
+    const sortBy = computed(() => route.query.sortBy);
     const hasPrev = computed(() => page.value - 1 > 0);
     const hasNext = computed(() => page.value + 1 <= totalPages.value);
     const isFirst = computed(() => page.value != 1);
@@ -52,20 +53,32 @@ export default {
     let startPage = 1;
     let endPage = 5;
     function next() {
-      router.push({ query: { page: page.value + 1, size: size.value } });
+      router.push({
+        query: { page: page.value + 1, size: size.value, sortBy: sortBy.value },
+      });
     }
     function prev() {
-      router.push({ query: { page: page.value - 1, size: size.value } });
+      router.push({
+        query: { page: page.value - 1, size: size.value, sortBy: sortBy.value },
+      });
     }
     function first() {
-      router.push({ query: { page: 1, size: size.value } });
+      router.push({
+        query: { page: 1, size: size.value, sortBy: sortBy.value },
+      });
     }
     function last() {
-      router.push({ query: { page: totalPages.value, size: size.value } });
+      router.push({
+        query: {
+          page: totalPages.value,
+          size: size.value,
+          sortBy: sortBy.value,
+        },
+      });
     }
     function changePage(pageNumber) {
       router.push({
-        query: { page: pageNumber, size: size.value },
+        query: { page: pageNumber, size: size.value, sortBy: sortBy.value },
       });
     }
     function isCurrentPage(pageNumber) {

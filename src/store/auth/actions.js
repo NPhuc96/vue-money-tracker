@@ -40,27 +40,20 @@ export default {
     localStorage.clear();
   },
   async request(context, email) {
-    const response = await axios.post(
-      REQUEST,
-      {},
-      { params: { email: email } }
-    );
-    const result = response.data;
+    await axios.post(REQUEST, {}, { params: { email: email } });
   },
   async confirm(context, payload) {
-    const response = await axios.post(
+    await axios.post(
       CONFIRM,
       {},
       { params: { email: payload.email, code: payload.code } }
     );
-    const result = response.data;
   },
   async changePassword(context, payload) {
-    const response = await axios.post(RESET, {
+    await axios.post(RESET, {
       email: payload.email,
       newPassword: payload.password,
     });
-    const result = response.data;
   },
 };
 function pushHome(router, response) {

@@ -3,7 +3,7 @@
     class="mt-6 mx-auto w-full sm:w-90 md:w-9/12 lg:w-1/2 xl:w-45"
     v-if="!isLoading"
   >
-    <div class="flex ml-3 sm:ml-6 md:ml-10 lg:ml-12 ">
+    <div class="flex ml-3 sm:ml-6 md:ml-10 lg:ml-12">
       <div class="pr-2">
         <select
           v-model="dateSelected"

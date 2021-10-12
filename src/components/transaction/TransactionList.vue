@@ -13,7 +13,11 @@
       :group="transaction.groups"
       :note="transaction.note || ''"
     />
-    <pagination v-if="!isFetching" :pageInfo="transactions.pageInfo" />
+    <pagination
+      :key="key"
+      v-if="!isFetching"
+      :pageInfo="transactions.pageInfo"
+    />
   </base-list-card>
 </template>
 

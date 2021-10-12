@@ -16,6 +16,7 @@ export default {
       userId: localStorage.getItem("user_id"),
       page: pageRequest.page,
       pageSize: pageRequest.size,
+      sortBy: pageRequest.sortBy,
     };
     const response = await axios.post(GET_TRANSACTIONS, request);
     const result = await response.data;

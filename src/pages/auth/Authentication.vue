@@ -1,14 +1,14 @@
 <template>
-  <base-form-card class="border-2 border-blue-200 my-16 mx-auto">
+  <base-form-card class="border-2 border-blue-200 my-16 mx-auto bg-gray-50">
     <div class="mx-auto flex text-center border-b-2 border-blue-200">
       <div
-        class="w-1/2"
+        class="w-1/2 rounded-sm"
         :class="{ 'bg-indigo-100 ring-2 ring-indigo-200': isLoginTab }"
       >
         <router-link :to="{ name: 'login' }">Login</router-link>
       </div>
       <div
-        class="w-1/2"
+        class="w-1/2 rounded-sm"
         :class="{ 'bg-indigo-100 ring-2 ring-indigo-200': !isLoginTab }"
       >
         <router-link :to="{ name: 'signup' }">Register</router-link>
