@@ -16,9 +16,17 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import {
+  checkError,
+  throwError,
+  isBlank,
+  isEmpty,
+  toggleInfo,
+} from "../../common/Error";
+
 export default {
   setup() {
     const store = useStore();
@@ -27,7 +35,11 @@ export default {
     let group = computed(() => store.getters.group);
     let id = computed(() => route.query.id || undefined);
     let isError = ref(false);
-    let error = ref("Can't be empty");
+    let error = ref();
+    const errors = reactive({
+      blank: "Can't be empty",
+      server: "Something went wrong",
+    });
     let isSuccess = ref(false);
 
     getGroup();
@@ -45,34 +57,23 @@ export default {
     }
 
     async function saveGroup() {
-      validate(enteredGroup.value);
+      validate();
       try {
-        if (!isError.value) {
-          await store.dispatch("saveGroup", {
-            id: id.value,
-            name: enteredGroup.value,
-          });
-          isSuccess.value = true;
-        }
+        await store.dispatch("saveGroup", {
+          id: id.value,
+          name: enteredGroup.value,
+        });
+        toggleInfo(isError, isSuccess);
       } catch (err) {
-        throwError("Something went wrong");
+        checkError(err, 400, isError, error, errors.server);
       }
     }
-    function validate(name) {
-      if (isEmpty(name) || isBlank(name)) {
-        throwError(error.value);
-      } else isError.value = false;
+    function validate() {
+      if (isEmpty(enteredGroup.value) || isBlank(enteredGroup.value)) {
+        throwError(isError, error, errors.blank);
+      }
     }
-    function isBlank(str) {
-      return /^\s*$/.test(str);
-    }
-    function isEmpty(str) {
-      return !str || str.length === 0;
-    }
-    function throwError(message) {
-      isError.value = true;
-      error.value = message;
-    }
+
     return { enteredGroup, saveGroup, isError, isSuccess, error };
   },
 };

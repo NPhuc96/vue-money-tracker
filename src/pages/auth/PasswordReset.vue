@@ -1,4 +1,5 @@
 <template>
+  <base-backdrop v-if="isLoading" />
   <form class="w-2/3 mx-auto py-2" @submit.prevent="save">
     <base-input
       v-if="step == 1"
@@ -32,6 +33,13 @@ import { mail, password } from "../../common/Patterns";
 import { reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import {
+  checkError,
+  throwError,
+  isBlank,
+  isEmpty,
+  toggleInfo,
+} from "../../common/Error";
 
 export default {
   setup() {
@@ -41,6 +49,7 @@ export default {
     const emailPattern = ref(mail);
     const passwordPattern = ref(password);
     const step = computed(() => +route.query.step || +1);
+    let isLoading = ref(false);
     let enteredEmail = ref(route.query.email || "");
     let entertedCode = ref("");
     let entertedPassword = ref("");
@@ -54,6 +63,7 @@ export default {
         invalid: "*Please provide a valid email",
       },
       code: {
+        blank: "Code can not be blank",
         invalid: "*Invalid Code or Used",
       },
       password: {
@@ -71,17 +81,19 @@ export default {
       }
     }
     async function saveEmail() {
-      if (validateEmail()) {
-        try {
-          await store.dispatch("request", enteredEmail.value);
-          setStep(+2);
-          isEmailSent.value = true;
-        } catch (err) {
-          if (err.response) checkError(err, errors.email.invalid);
-        }
+      validateEmail();
+      try {
+        isLoading.value = true;
+        await store.dispatch("request", enteredEmail.value);
+        setStep(+2);
+        isEmailSent.value = true;
+      } catch (err) {
+        checkError(err, 400, isError, error, errors.email.invalid);
       }
+      isLoading.value = false;
     }
     async function saveCode() {
+      validateCode();
       try {
         await store.dispatch("confirm", {
           email: enteredEmail.value,
@@ -90,20 +102,19 @@ export default {
         setStep(+3);
         isEmailSent.value = false;
       } catch (err) {
-        if (err.response) checkError(err, errors.code.invalid);
+        checkError(err, 400, isError, error, errors.code.invalid);
       }
     }
     async function savePassword() {
-      if (validatePassword()) {
-        try {
-          await store.dispatch("changePassword", {
-            password: entertedPassword.value,
-            email: enteredEmail.value,
-          });
-          isSuccess.value = true;
-        } catch (err) {
-          if (err.response) checkError(err, errors.password.invalid);
-        }
+      validatePassword();
+      try {
+        await store.dispatch("changePassword", {
+          password: entertedPassword.value,
+          email: enteredEmail.value,
+        });
+        toggleInfo(isError, isSuccess);
+      } catch (err) {
+        checkError(err, 400, isError, error, errors.password.invalid);
       }
     }
     function setStep(number) {
@@ -111,30 +122,24 @@ export default {
         name: "passwordReset",
         query: { step: number, email: enteredEmail.value },
       });
+      isError.value = false;
     }
     function validateEmail() {
       if (!emailPattern.value.test(enteredEmail.value)) {
-        throwError(errors.email.invalid);
-        return false;
+        throwError(isError, error, errors.email.invalid);
       }
-      return true;
     }
     function validatePassword() {
       if (!passwordPattern.value.test(entertedPassword.value)) {
-        throwError(errors.password.invalid);
-        return false;
-      }
-      return true;
-    }
-    function checkError(err, errorMessage) {
-      if (err.response.status >= 400) {
-        throwError(errorMessage);
+        throwError(isError, error, errors.password.invalid);
       }
     }
-    function throwError(errorMessage) {
-      isError.value = true;
-      error.value = errorMessage;
+    function validateCode() {
+      if (isBlank(entertedCode) || isEmpty(entertedCode)) {
+        throwError(isError, error, errors.code.blank);
+      }
     }
+
     return {
       save,
       enteredEmail,
@@ -145,6 +150,7 @@ export default {
       isEmailSent,
       step,
       error,
+      isLoading,
     };
   },
 };

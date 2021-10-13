@@ -52,33 +52,36 @@ export default {
     const isEmpty = computed(() => props.pageInfo.totalElements === 0);
     let startPage = 1;
     let endPage = 5;
+    let pageRequest = (page, size, sortBy) => {
+      return {
+        page: page,
+        size: size,
+        sortBy: sortBy,
+      };
+    };
     function next() {
       router.push({
-        query: { page: page.value + 1, size: size.value, sortBy: sortBy.value },
+        query: pageRequest(page.value + 1, size.value, sortBy.value),
       });
     }
     function prev() {
       router.push({
-        query: { page: page.value - 1, size: size.value, sortBy: sortBy.value },
+        query: pageRequest(page.value - 1, size.value, sortBy.value),
       });
     }
     function first() {
       router.push({
-        query: { page: 1, size: size.value, sortBy: sortBy.value },
+        query: pageRequest(1, size.value, sortBy.value),
       });
     }
     function last() {
       router.push({
-        query: {
-          page: totalPages.value,
-          size: size.value,
-          sortBy: sortBy.value,
-        },
+        query: pageRequest(totalPages.value, size.value, sortBy.value),
       });
     }
     function changePage(pageNumber) {
       router.push({
-        query: { page: pageNumber, size: size.value, sortBy: sortBy.value },
+        query: pageRequest(pageNumber, size.value, sortBy.value),
       });
     }
     function isCurrentPage(pageNumber) {
