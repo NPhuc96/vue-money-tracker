@@ -88,6 +88,7 @@ export default {
         setStep(+2);
         isEmailSent.value = true;
       } catch (err) {
+        isLoading.value = false;
         checkError(err, 400, isError, error, errors.email.invalid);
       }
       isLoading.value = false;

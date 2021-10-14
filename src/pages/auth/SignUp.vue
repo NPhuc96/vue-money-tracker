@@ -71,6 +71,7 @@ export default {
         await store.dispatch("signup", signup);
         toggleInfo(isError, isSuccess);
       } catch (err) {
+        isLoading.value = false;
         checkError(err, 400, isError, error, err.response.data.errorMessage);
       }
       isLoading.value = false;

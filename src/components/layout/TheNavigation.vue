@@ -1,37 +1,38 @@
 <template>
   <div
-    class="flex gap-4 sm:gap-7 md:gap-16 lg:gap-20 xl:gap-28 mx-auto border-b"
+    class="flex gap-4 sm:gap-7 md:gap-12 lg:gap-16 xl:gap-20 mx-auto border-b"
   >
     <div class="ml-2">
       <button @click="switchToHome">
-        <base-svg :isCurrentRoute="isHome">
+        <base-svg :isCurrentRoute="isHome" :viewBox="'0 -3 24 24'">
           <path :d="home" />
         </base-svg>
       </button>
     </div>
     <div
-      class="flex gap-4 sm:gap-7 md:gap-16 lg:gap-20 xl:gap-28"
+      class="flex gap-4 sm:gap-7 md:gap-10 lg:gap-12 xl:gap-20"
       v-if="isLoggedIn"
     >
       <button @click="switchToReport">
-        <base-svg :isCurrentRoute="isReport">
+        <base-svg :isCurrentRoute="isReport" :viewBox="'0 -1 24 24'">
           <path :d="report" />
         </base-svg>
       </button>
       <button @click="switchToTransaction">
-        <base-svg :isCurrentRoute="isAdd">
+        <base-svg :isCurrentRoute="isAdd" :viewBox="'0 0 24 24'">
           <path :d="add" />
         </base-svg>
       </button>
     </div>
     <div>
       <button v-if="isLoggedIn" @click="logout">
-        <base-svg>
+        <base-svg :viewBox="'0 -1 24 24'">
           <path :d="signOut" />
         </base-svg>
       </button>
       <router-link :to="{ name: 'login' }" v-else
-        ><base-svg :isCurrentRoute="isLogin"> <path :d="signIn" /> </base-svg
+        ><base-svg :isCurrentRoute="isLogin" :viewBox="'0 -1 24 24'">
+          <path :d="signIn" /> </base-svg
       ></router-link>
     </div>
   </div>
@@ -89,4 +90,4 @@ export default {
 };
 </script>
 
-<style></style>
+

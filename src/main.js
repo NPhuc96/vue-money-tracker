@@ -8,7 +8,7 @@ import BaseInput from "./components/UI/BaseInput.vue";
 import BaseBackdrop from "./components/UI/BaseBackdrop.vue";
 import BaseDialog from "./components/UI/BaseDialog.vue";
 import BaseFormCard from "./components/UI/BaseFormCard.vue";
-import BaseSvg from "./components/UI/BaseSvg.vue";
+import BaseSVG from "./components/UI/BaseSVG.vue";
 import BaseSubSvg from "./components/UI/BaseSubSvg.vue";
 import store from "./store/index";
 import router from "./router";
@@ -25,7 +25,7 @@ app.component("base-input", BaseInput);
 app.component("base-backdrop", BaseBackdrop);
 app.component("base-dialog", BaseDialog);
 app.component("base-form-card", BaseFormCard);
-app.component("base-svg", BaseSvg);
+app.component("base-svg", BaseSVG);
 app.component("base-sub-svg", BaseSubSvg);
 
 app.use(VueApexCharts);

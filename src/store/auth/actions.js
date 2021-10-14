@@ -9,6 +9,7 @@ const RESET = "password/reset";
 
 export default {
   async signup(context, payload) {
+    console.log(payload);
     await axios.post(REGISTER, {
       email: payload.email,
       password: payload.password,
