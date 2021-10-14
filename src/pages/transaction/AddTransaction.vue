@@ -46,6 +46,13 @@
 import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import {
+  checkError,
+  throwError,
+  isBlank,
+  isEmpty,
+  toggleInfo,
+} from "../../common/Error";
 
 export default {
   setup() {
@@ -57,12 +64,13 @@ export default {
     const enteredNote = ref();
     const groupSelected = ref("");
     let isError = ref(false);
+    let isSuccess = ref(false);
     let error = ref("");
     const errors = reactive({
       date: "Date can't be blank",
-      amount: "Amount can't be blank or number",
+      amount: "Amound is not a number",
+      server: "Something went wrong",
     });
-    let isSuccess = ref(false);
 
     const groups = computed(() => store.getters.groups);
     const transaction = computed(() => store.getters.transaction);
@@ -77,14 +85,14 @@ export default {
 
     function fillData() {
       if (transaction.value) {
-        (enteredDate.value = transaction.value.onDate),
-          (enteredAmount.value = transaction.value.amount),
-          (groupSelected.value = transaction.value.groups),
-          (enteredNote.value = transaction.value.note);
+        enteredDate.value = transaction.value.onDate;
+        enteredAmount.value = transaction.value.amount;
+        groupSelected.value = transaction.value.groups;
+        enteredNote.value = transaction.value.note;
       }
     }
     function checkEmptyGroup() {
-      if (groupSelected.value === "" || groupSelected.value === undefined) {
+      if (isEmpty(groupSelected.value) || groupSelected.value === undefined) {
         return (groupSelected.value = null);
       }
     }
@@ -92,15 +100,13 @@ export default {
       checkEmptyGroup();
       validate();
       try {
-        if (!isError.value) {
-          await store.dispatch("saveTransaction", formData());
-          isSuccess.value = true;
-        }
+        await store.dispatch("saveTransaction", formData());
+        toggleInfo(isError, isSuccess);
       } catch (err) {
-        throwError("Something went wrong");
+        checkError(err, 400, isError, error, errors.server);
       }
     }
-    function formData() {
+    let formData = () => {
       return {
         id: id.value,
         onDate: enteredDate.value,
@@ -108,35 +114,21 @@ export default {
         note: enteredNote.value,
         groups: JSON.parse(JSON.stringify(groupSelected.value)),
       };
-    }
+    };
     function validate() {
       validateDate(enteredDate.value);
       validateAmount(enteredAmount.value);
     }
     function validateDate(date) {
       if (isEmpty(date) || isBlank(date)) {
-        throwError(errors.date);
-      } else setBack();
+        throwError(isError, error, errors.date);
+      }
     }
 
     function validateAmount(amount) {
-      console.log(isEmpty(amount) || isBlank(amount) || isNaN(amount));
       if (isEmpty(amount) || isBlank(amount) || isNaN(amount)) {
-        throwError(errors.amount);
-      } else setBack();
-    }
-    function isBlank(str) {
-      return /^\s*$/.test(str);
-    }
-    function isEmpty(str) {
-      return !str || str.length === 0;
-    }
-    function throwError(message) {
-      isError.value = true;
-      error.value = message;
-    }
-    function setBack() {
-      isError.value = false;
+        throwError(isError, error, errors.amount);
+      }
     }
 
     return {

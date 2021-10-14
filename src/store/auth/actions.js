@@ -3,9 +3,13 @@ import axios from "../../api/Client";
 const REGISTER = "/registration";
 const REGISTER_CONFIRMATION = "/registration/confirm";
 const LOGIN = "/login";
+const REQUEST = "/password/request";
+const CONFIRM = "/password/confirm";
+const RESET = "password/reset";
 
 export default {
   async signup(context, payload) {
+    console.log(payload);
     await axios.post(REGISTER, {
       email: payload.email,
       password: payload.password,
@@ -35,6 +39,22 @@ export default {
   logout(context) {
     unsetAuthentication(context);
     localStorage.clear();
+  },
+  async request(context, email) {
+    await axios.post(REQUEST, {}, { params: { email: email } });
+  },
+  async confirm(context, payload) {
+    await axios.post(
+      CONFIRM,
+      {},
+      { params: { email: payload.email, code: payload.code } }
+    );
+  },
+  async changePassword(context, payload) {
+    await axios.post(RESET, {
+      email: payload.email,
+      newPassword: payload.password,
+    });
   },
 };
 function pushHome(router, response) {

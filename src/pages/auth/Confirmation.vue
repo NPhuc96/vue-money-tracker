@@ -1,6 +1,6 @@
 <template>
-  <base-form-card class="border-2 border-blue-200 my-16 mx-auto">
-    <p v-if="isError" class="text-red-500 text-center">{{ error }}</p>
+  <base-form-card class="border-2 border-blue-200 my-16 mx-auto text-center">
+    <p v-if="isError" class="text-red-500">{{ error }}</p>
     <p v-else-if="isSuccess">
       {{ success }}
     </p>
@@ -11,6 +11,7 @@
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { reactive, ref } from "vue";
+import { checkError, toggleInfo } from "../../common/Error";
 
 export default {
   setup() {
@@ -25,22 +26,15 @@ export default {
       token: route.query.token,
       userId: +route.query.userId,
     });
-    console.log(confirmation);
     async function confirmToken() {
       try {
         await store.dispatch("confirmEmailToken", confirmation);
-        isSuccess.value = true;
+        toggleInfo(isError, isSuccess);
       } catch (err) {
-        if (err.response) {
-          throwError(err.response.data.errorMessage);
-        }
+        checkError(err, 400, isError, error, err.response.data.errorMessage);
       }
     }
 
-    function throwError(errorMessage) {
-      isError.value = true;
-      error.value = errorMessage;
-    }
     confirmToken();
     return { error, isError, confirmToken, success, isSuccess };
   },

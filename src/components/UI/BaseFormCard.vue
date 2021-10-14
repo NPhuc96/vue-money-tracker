@@ -1,6 +1,16 @@
 <template>
   <div
-    class="sm:w-2/3 md:w-1/3 xl:w-1/4 bg-blue-100 rounded-lg text-sm shadow-lg"
+    class="
+      w-full
+      sm:w-90
+      md:w-1/2
+      lg:w-45
+      xl:w-35
+      bg-white
+      rounded-md
+      text-sm
+      shadow-lg
+    "
   >
     <slot />
   </div>

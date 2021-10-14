@@ -1,4 +1,5 @@
 <template>
+  <base-backdrop v-if="isLoading" />
   <form class="w-2/3 mx-auto py-2" @submit.prevent="save">
     <base-input
       type="text"
@@ -31,18 +32,19 @@
 <script>
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
+import { mail, password } from "../../common/Patterns";
+import { checkError, throwError, toggleInfo } from "../../common/Error";
 
 export default {
   setup() {
     const store = useStore();
-    const emailPattern = ref(
-      /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/
-    );
-    const passwordPattern = ref(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
+    const emailPattern = ref(mail);
+    const passwordPattern = ref(password);
     const success = ref("A confirmation email has been sent");
     let isError = ref(false);
     let isSuccess = ref(false);
     let error = ref();
+    let isLoading = ref(false);
 
     const errors = reactive({
       email: {
@@ -65,16 +67,20 @@ export default {
       validateEmail();
       validatePassword();
       try {
+        isLoading.value = true;
         await store.dispatch("signup", signup);
-        isSuccess.value = true;
+        toggleInfo(isError, isSuccess);
       } catch (err) {
-        checkError(err);
+        isLoading.value = false;
+        checkError(err, 400, isError, error, err.response.data.errorMessage);
       }
+      isLoading.value = false;
     }
 
     function validateEmail() {
-      if (!emailPattern.value.test(signup.email))
-        throwError(errors.email.invalid);
+      if (!emailPattern.value.test(signup.email)) {
+        throwError(isError, error, errors.email.invalid);
+      }
     }
 
     function validatePassword() {
@@ -84,26 +90,15 @@ export default {
 
     function checkPasswordPattern() {
       if (!passwordPattern.value.test(signup.password))
-        throwError(errors.password.invalid);
+        throwError(isError, error, errors.password.invalid);
     }
 
     function checkMatchingPassword() {
       if (!(signup.password === signup.matchingPassword))
-        throwError(errors.password.confirmation);
+        throwError(isError, error, errors.password.confirmation);
     }
 
-    function checkError(err) {
-      console.log(err.response);
-      if (err.response.status >= 400) {
-        throwError(err.response.data.errorMessage);
-      }
-    }
-    function throwError(errorMessage) {
-      isError.value = true;
-      error.value = errorMessage;
-    }
-
-    return { signup, save, error, isError, success, isSuccess };
+    return { signup, save, error, isError, success, isSuccess, isLoading };
   },
 };
 </script>

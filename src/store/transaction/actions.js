@@ -8,6 +8,7 @@ const GET_GROUPS = "/groups";
 const ADD_GROUP = "/group/add";
 const GET_GROUP = "/group";
 const DELETE_GROUP = "/group/delete";
+const REPORT = "/report";
 
 export default {
   async getTransactions(context, pageRequest) {
@@ -15,6 +16,7 @@ export default {
       userId: localStorage.getItem("user_id"),
       page: pageRequest.page,
       pageSize: pageRequest.size,
+      sortBy: pageRequest.sortBy,
     };
     const response = await axios.post(GET_TRANSACTIONS, request);
     const result = await response.data;
@@ -27,7 +29,7 @@ export default {
       {
         params: {
           id: id,
-          userid: localStorage.getItem("user_id"),
+          userId: localStorage.getItem("user_id"),
         },
       }
     );
@@ -40,7 +42,7 @@ export default {
       {},
       {
         params: {
-          userid: localStorage.getItem("user_id"),
+          userId: localStorage.getItem("user_id"),
         },
       }
     );
@@ -55,7 +57,7 @@ export default {
       {
         params: {
           id: id,
-          userid: localStorage.getItem("user_id"),
+          userId: localStorage.getItem("user_id"),
         },
       }
     );
@@ -87,15 +89,25 @@ export default {
   async deleteTransaction(context, id) {
     const transaction = {
       id: id,
-      userid: localStorage.getItem("user_id"),
+      userId: localStorage.getItem("user_id"),
     };
     await axios.delete(DELETE_TRANSACTION, { params: transaction });
   },
   async deleteGroup(context, id) {
     const group = {
       id: id,
-      userid: localStorage.getItem("user_id"),
+      userId: localStorage.getItem("user_id"),
     };
     await axios.delete(DELETE_GROUP, { params: group });
+  },
+  async getReport(context, payload) {
+    const report = {
+      month: payload.month,
+      year: payload.year,
+      userId: localStorage.getItem("user_id"),
+    };
+    const response = await axios.post(REPORT, report);
+    const result = await response.data;
+    context.commit("setReport", result);
   },
 };

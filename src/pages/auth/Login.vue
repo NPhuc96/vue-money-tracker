@@ -1,18 +1,21 @@
 <template>
-  <form class="w-2/3 mx-auto py-2" @submit.prevent="save">
+  <form class="w-9/12 mx-auto py-2" @submit.prevent="save">
     <base-input
       type="text"
       placeHolder="enter email"
       v-model:value.trim="login.email"
     />
-
     <base-input
       type="password"
       placeHolder="enter password"
       v-model:value.trim="login.password"
     />
     <p v-if="isError" class="text-xs text-red-500">{{ error }}</p>
-
+    <div class="text-xss md:ml-44 lg:ml-52">
+      <router-link :to="{ name: 'passwordReset', query: { step: 1 } }"
+        >Reset password?
+      </router-link>
+    </div>
     <base-button>Login </base-button>
   </form>
 </template>
@@ -21,6 +24,7 @@
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { checkError, throwError, isBlank, isEmpty } from "../../common/Error";
 
 export default {
   setup() {
@@ -31,41 +35,31 @@ export default {
       password: "",
       router: router,
     });
-    const error = ref();
+    let error = ref();
+    let isError = ref();
     const errors = reactive({
-      wrongCredentails: "Email or password is incorrect",
-      invaild: "User is blocked",
+      wrongCredentails: "Incorrect or User is blocked ",
+      isBlank: "Field cant be blank",
     });
-    const isError = ref();
 
     async function save() {
       validate();
       try {
         await store.dispatch("login", login);
       } catch (err) {
-        if (err.response) {
-          checkError400(err);
-          checkError403(err);
-        }
+        checkError(err, 400, isError, error, errors.wrongCredentails);
       }
     }
-
     function validate() {
-      if (login.email === "" || login.passsword === "")
-        throwError("Field cant be blank");
-    }
-    function checkError400(err) {
-      if (err.response.status === 400) throwError(errors.invaild);
-    }
-
-    function checkError403(err) {
-      if (err.response.status === 403) throwError(errors.wrongCredentails);
+      if (
+        isBlank(login.email) ||
+        isEmpty(login.email) ||
+        isBlank(login.passsword) ||
+        isEmpty(login.password)
+      )
+        throwError(isError, error, errors.isBlank);
     }
 
-    function throwError(errorMessage) {
-      isError.value = true;
-      error.value = errorMessage;
-    }
     return { isError, error, save, login };
   },
 };

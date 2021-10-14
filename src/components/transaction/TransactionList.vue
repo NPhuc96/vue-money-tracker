@@ -12,10 +12,13 @@
       :amount="transaction.amount"
       :group="transaction.groups"
       :note="transaction.note || ''"
-    ></transaction-item>
+    />
+    <pagination
+      :key="key"
+      v-if="!isFetching"
+      :pageInfo="transactions.pageInfo"
+    />
   </base-list-card>
-
-  <pagination v-if="!isFetching" :pageInfo="transactions.pageInfo"></pagination>
 </template>
 
 <script>

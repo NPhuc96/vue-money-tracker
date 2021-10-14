@@ -1,7 +1,7 @@
 <template>
-  <p v-if="isEmpty" class="font-medium w-1/3 mx-auto">There nothing to show</p>
+  <p v-if="isEmpty" class="font-medium mx-auto">There nothing to show</p>
   <div
-    class="mx-auto flex gap-x-1 w-1/3 p-1 text-sm text-center"
+    class="mx-auto ml-2 flex gap-0.5 sm:text-sm md:text-base text-center"
     v-if="!isEmpty"
   >
     <base-anchor v-if="isFirst">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 export default {
@@ -39,9 +39,10 @@ export default {
   setup(props) {
     const route = useRoute();
     const router = useRouter();
-    const totalPages = ref(props.pageInfo.totalPages);
-    const page = computed(() => +route.query.page || 1);
-    const size = computed(() => +route.query.size || 10);
+    const totalPages = computed(() => props.pageInfo.totalPages);
+    const page = computed(() => +route.query.page);
+    const size = computed(() => +route.query.size);
+    const sortBy = computed(() => route.query.sortBy);
     const hasPrev = computed(() => page.value - 1 > 0);
     const hasNext = computed(() => page.value + 1 <= totalPages.value);
     const isFirst = computed(() => page.value != 1);
@@ -51,21 +52,36 @@ export default {
     const isEmpty = computed(() => props.pageInfo.totalElements === 0);
     let startPage = 1;
     let endPage = 5;
+    let pageRequest = (page, size, sortBy) => {
+      return {
+        page: page,
+        size: size,
+        sortBy: sortBy,
+      };
+    };
     function next() {
-      router.push({ query: { page: page.value + 1, size: size.value } });
+      router.push({
+        query: pageRequest(page.value + 1, size.value, sortBy.value),
+      });
     }
     function prev() {
-      router.push({ query: { page: page.value - 1, size: size.value } });
+      router.push({
+        query: pageRequest(page.value - 1, size.value, sortBy.value),
+      });
     }
     function first() {
-      router.push({ query: { page: 1, size: size.value } });
+      router.push({
+        query: pageRequest(1, size.value, sortBy.value),
+      });
     }
     function last() {
-      router.push({ query: { page: totalPages.value, size: size.value } });
+      router.push({
+        query: pageRequest(totalPages.value, size.value, sortBy.value),
+      });
     }
     function changePage(pageNumber) {
       router.push({
-        query: { page: pageNumber, size: size.value },
+        query: pageRequest(pageNumber, size.value, sortBy.value),
       });
     }
     function isCurrentPage(pageNumber) {
@@ -73,7 +89,7 @@ export default {
     }
 
     const paginate = computed(() => {
-      if (totalPages.value <= 5) {
+      if (totalPages.value <= 4) {
         return totalLessThanDefault();
       } else {
         return totalGreaterThanDefault();

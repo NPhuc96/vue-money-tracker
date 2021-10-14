@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-1/2 mx-auto md:w-full" :key="key">
+  <div class="lg:w-3/4 mx-auto md:w-full" :key="key">
     <base-dialog
       :showDialog="showDialog"
       :deleteItem="deleteItem"
@@ -8,6 +8,7 @@
     </base-dialog>
     <main id="main" :key="key">
       <the-addition v-if="isShow" :switchToHome="switchToHome" />
+      <sort-size @getSort="getSort" @updateSize="updateSize" />
       <transaction-list
         @updateTransaction="updateTransaction"
         @updateGroup="updateGroup"
@@ -21,20 +22,22 @@
 </template>
 
 <script>
-import TransactionList from "../components/transaction/TransactionList.vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, computed, watch, ref } from "vue";
 import TheAddition from "./transaction/TheAddition.vue";
+import TransactionList from "../components/transaction/TransactionList.vue";
+import SortSize from "../components/transaction/SortSize.vue";
 
 export default {
-  components: { TransactionList, TheAddition },
+  components: { TransactionList, TheAddition, SortSize },
   setup() {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
     const page = computed(() => +route.query.page || 1);
-    const size = computed(() => +route.query.size || 10);
+    const size = computed(() => +route.query.size || 5);
+    const sortBy = computed(() => route.query.sortBy || "id");
     let isShow = computed(
       () => route.name == "addTransaction" || route.name == "addGroup"
     );
@@ -46,13 +49,15 @@ export default {
     const pageRequest = reactive({
       page: page,
       size: size,
+      sortBy: sortBy,
     });
     watch([pageRequest, key], () => {
       getTransaction();
     });
     getTransaction();
-    function getTransaction() {
-      store.dispatch("getTransactions", pageRequest);
+    switchToHome();
+    async function getTransaction() {
+      await store.dispatch("getTransactions", pageRequest);
     }
     let isFetching = computed(() => {
       return transactions.value ? false : true;
@@ -77,14 +82,26 @@ export default {
       isDeleteTransaction.value = false;
       id.value = groupId;
     }
-    function deleteItem() {
+    function getSort(sortParam) {
+      router.push({
+        name: "home",
+        query: { page: page.value, size: size.value, sortBy: sortParam },
+      });
+    }
+    async function updateSize(sizeParam) {
+      router.push({
+        name: "home",
+        query: { page: 1, size: sizeParam, sortBy: sortBy.value },
+      });
+    }
+    async function deleteItem() {
       if (isDeleteTransaction.value) {
-        deleteTransaction();
+        await deleteTransaction();
       } else {
-        deleteGroup();
+        await deleteGroup();
       }
       toggleDialog();
-      store.dispatch("forceUpdate", +1);
+      await store.dispatch("forceUpdate", +1);
     }
     function toggleDialog() {
       showDialog.value = !showDialog.value;
@@ -96,6 +113,7 @@ export default {
     async function deleteGroup() {
       await store.dispatch("deleteGroup", id.value);
     }
+
     return {
       transactions,
       isFetching,
@@ -109,6 +127,8 @@ export default {
       getGroupId,
       deleteItem,
       toggleDialog,
+      getSort,
+      updateSize,
     };
   },
 };
