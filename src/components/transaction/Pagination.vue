@@ -123,7 +123,6 @@ export default {
         endPage = 5;
       }
     }
-
     return {
       first,
       isFirst,

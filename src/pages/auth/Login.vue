@@ -31,8 +31,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const login = reactive({
-      email: "",
-      password: "",
+      email: "test@abc.def",
+      password: "Test1996",
       router: router,
     });
     let error = ref();
